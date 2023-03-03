@@ -16,7 +16,7 @@
     <!-- Accounts dropdown -->
     <div #accountsDropdown [class]="[ 'accounts-dropdown', showAccountsDropdown ? 'visible' : 'hidden' ]">
       <div class="header">Currently Selected</div>
-      <div class="account active" *ngIf="wallet.selectedAccount !== null"> <!-- active nano_ account -->
+      <div class="account active" *ngIf="wallet.selectedAccount !== null"> <!-- active ban_ account -->
         <div class="name-column">
           <div class="name">{{ wallet.selectedAccount.addressBookName ? wallet.selectedAccount.addressBookName : (('general.account' | transloco) + ' #' + wallet.selectedAccount.index) }}</div>
           <div class="address nano-address-monospace">{{ wallet.selectedAccount.id }}</div>

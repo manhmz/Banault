@@ -20,7 +20,7 @@ export class QrModalComponent implements OnInit {
   @Input() type: QRType;
   availableDevices: MediaDeviceInfo[];
   currentDevice: MediaDeviceInfo = null;
-  nano_scheme = /^(xrb|nano|nanorep|nanoseed|nanokey):.+$/g;
+  ban_scheme = /^(xrb|nano|nanorep|nanoseed|nanokey):.+$/g;
 
   formatsEnabled: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
@@ -70,7 +70,7 @@ export class QrModalComponent implements OnInit {
     } else if (this.util.nano.isValidHash(resultString)) {
       type = 'hash';
       content = resultString;
-    } else if (this.nano_scheme.test(resultString)) {
+    } else if (this.ban_scheme.test(resultString)) {
       // This is a valid Nano scheme URI
       const url = new URL(resultString);
       content = url.pathname;

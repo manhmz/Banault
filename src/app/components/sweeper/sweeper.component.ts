@@ -219,7 +219,7 @@ export class SweeperComponent implements OnInit {
     // validate nano seed or private key
     if (key.length === 64) {
       if (nanocurrency.checkSeed(key)) {
-        return 'nano_seed';
+        return 'ban_seed';
       }
     }
     // validate bip39 seed
@@ -497,7 +497,7 @@ export class SweeperComponent implements OnInit {
       }
 
       // nano seed or private key
-      if (keyType === 'nano_seed' || seed !== '' || keyType === 'bip39_seed') {
+      if (keyType === 'ban_seed' || seed !== '' || keyType === 'bip39_seed') {
         // check if a private key first (no index)
         this.appendLog('Checking if input is a private key');
         if (seed === '') { // seed from input, no mnemonic

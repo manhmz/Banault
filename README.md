@@ -65,6 +65,6 @@ Special thanks to the following!
 ## Donations
 
 If you have found Nault useful and are feeling generous, you can donate at
-`nano_3niceeeyiaa86k58zhaeygxfkuzgffjtwju9ep33z9c8qekmr3iuc95jbqc8`
+`ban_3niceeeyiaa86k58zhaeygxfkuzgffjtwju9ep33z9c8qekmr3iuc95jbqc8`
 
 Thanks a lot!

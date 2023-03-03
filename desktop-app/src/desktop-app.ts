@@ -13,7 +13,7 @@ const log = require('electron-log');
 let showUpdateErrors = false;
 let saveTimeout = null;
 let isDownloading = false;
-const nano_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
+const ban_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
 
 /**
  * By default, the logger writes logs to the following locations:
@@ -157,10 +157,10 @@ new AppUpdater();
 
 // Register handler for nano: links
 if (process.platform === 'darwin') {
-  nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme));
+  ban_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme));
 } else {
   const args = process.argv[1] ? [path.resolve(process.argv[1])] : [];
-  nano_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme, process.execPath, args));
+  ban_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme, process.execPath, args));
 }
 
 // Initialize Ledger device detection
@@ -441,6 +441,6 @@ function handleDeeplink(deeplink: string) {
 }
 
 function findDeeplink(argv: string[]) {
-  const nano_scheme = new RegExp(`^(${nano_schemes.join('|')}):.+$`, 'g');
-  return argv.find((s) => nano_scheme.test(s));
+  const ban_scheme = new RegExp(`^(${ban_schemes.join('|')}):.+$`, 'g');
+  return argv.find((s) => ban_scheme.test(s));
 }

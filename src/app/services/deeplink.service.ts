@@ -17,7 +17,7 @@ export class DeeplinkService {
   ) { }
 
   navigate(deeplink: string): boolean {
-    const nano_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|https):.+$/g;
+    const ban_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|https):.+$/g;
 
     if (this.util.account.isValidAccount(deeplink)) {
       // Got address, routing to send...
@@ -27,7 +27,7 @@ export class DeeplinkService {
       // Seed
       this.handleSeed(deeplink);
 
-    } else if (nano_scheme.test(deeplink)) {
+    } else if (ban_scheme.test(deeplink)) {
       // This is a valid Nano scheme URI
       const url = new URL(deeplink);
 

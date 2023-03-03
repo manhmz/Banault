@@ -85,7 +85,7 @@ export class AppComponent implements OnInit {
 
     this.updateAppTheme();
 
-    // New for v19: Patch saved xrb_ prefixes to nano_
+    // New for v19: Patch saved ban_ prefixes to ban_
     await this.patchXrbToNanoPrefixData();
 
     // set translation language
@@ -222,14 +222,14 @@ export class AppComponent implements OnInit {
   }
 
   /*
-    This is important as it looks through saved data using hardcoded xrb_ prefixes
-    (Your wallet, address book, rep list, etc) and updates them to nano_ prefix for v19 RPC
+    This is important as it looks through saved data using hardcoded ban_ prefixes
+    (Your wallet, address book, rep list, etc) and updates them to ban_ prefix for v19 RPC
    */
   async patchXrbToNanoPrefixData() {
     // If wallet is version 2, data has already been patched.  Otherwise, patch all data
     if (this.settings.settings.walletVersion >= 2) return;
 
-    await this.walletService.patchOldSavedData(); // Change saved xrb_ addresses to nano_
+    await this.walletService.patchOldSavedData(); // Change saved ban_ addresses to ban_
     this.addressBook.patchXrbPrefixData();
     this.representative.patchXrbPrefixData();
 
@@ -305,7 +305,7 @@ export class AppComponent implements OnInit {
     if (!searchData.length) return;
 
     const isValidNanoAccount = (
-        ( searchData.startsWith('xrb_') || searchData.startsWith('nano_') )
+        ( searchData.startsWith('ban_') || searchData.startsWith('ban_') )
       && this.util.account.isValidAccount(searchData)
     );
 

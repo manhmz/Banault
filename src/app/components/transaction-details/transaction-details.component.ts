@@ -14,7 +14,7 @@ import { TranslocoService } from '@ngneat/transloco';
   styleUrls: ['./transaction-details.component.css']
 })
 export class TransactionDetailsComponent implements OnInit {
-  nano = 1000000000000000000000000;
+  banano = 1000000000000000000000000;
 
   routerSub = null;
   transaction: any = {};
@@ -127,7 +127,7 @@ export class TransactionDetailsComponent implements OnInit {
     }
 
     if (hashData.amount) {
-      this.amountRaw = new BigNumber(hashData.amount).mod(this.nano);
+      this.amountRaw = new BigNumber(hashData.amount).mod(this.banano);
     }
 
     if (

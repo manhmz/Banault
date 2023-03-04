@@ -13,12 +13,12 @@
 				class="type-identicon-combined"
 				*ngSwitchCase="(settingIdenticonsStyle !== 'none')"
 			>
-				<app-nano-identicon
+				<app-banano-identicon
 					scale="6"
 					[accountID]="(transaction.link_as_account || transaction.account)"
 					[settingIdenticonsStyle]="settingIdenticonsStyle"
-					class="nano-identicon"
-				></app-nano-identicon>
+					class="banano-identicon"
+				></app-banano-identicon>
 				<ng-container [ngSwitch]="true">
 					<span
 						class="type-icon-container uk-text-muted"
@@ -119,8 +119,8 @@
 			>{{ 'general.blockactions.unknown-action' | transloco }}<ng-template [ngTemplateOutlet]="unconfirmedIcon"></ng-template></div>
 		</ng-container>
 		<div class="amount" *ngIf="isReceivableTransaction || isSendTransaction || isReceiveTransaction">
-			<span class="amount-integer">{{ transaction.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
-			<span class="amount-fractional">{{ transaction.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+			<span class="amount-integer">{{ transaction.amount | rai: 'mbanano,true' | amountsplit: 0 }}</span>
+			<span class="amount-fractional">{{ transaction.amount | rai: 'mbanano,true' | amountsplit: 1 }}</span>
 			<span class="currency-name">XNO</span>
 		</div>
 	</div>
@@ -134,11 +134,11 @@
 				class="account uk-text-truncate"
 				*ngSwitchDefault
 			>
-				<div class="nano-address-monospace">
-					<app-nano-account-id
+				<div class="banano-address-monospace">
+					<app-banano-account-id
 						[accountID]="(transaction.link_as_account || transaction.account)"
 						middle="off"
-					></app-nano-account-id>
+					></app-banano-account-id>
 				</div>
 			</div>
 		</ng-container>

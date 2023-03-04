@@ -28,7 +28,7 @@ export interface BalanceAccount {
 
 export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  nano = 1000000000000000000000000;
+  banano = 1000000000000000000000000;
   activePanel = 0;
   creatingNewEntry = false;
 
@@ -170,7 +170,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
     // Fetch pending of all tracked accounts
     let pending;
     if (this.appSettings.settings.minimumReceive) {
-      const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+      const minAmount = this.util.banano.mbananoToRaw(this.appSettings.settings.minimumReceive);
       pending = await this.api.accountsPendingLimitSorted(accountIDs, minAmount.toString(10));
     } else {
       pending = await this.api.accountsPendingSorted(accountIDs);
@@ -196,8 +196,8 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       // Add balances from RPC data
       } else {
         balanceAccount.balance = new BigNumber(apiAccounts.balances[entry.account].balance);
-        balanceAccount.balanceFiat = this.util.nano.rawToMnano(balanceAccount.balance).times(this.fiatPrice).toNumber();
-        balanceAccount.balanceRaw = new BigNumber(balanceAccount.balance).mod(this.nano);
+        balanceAccount.balanceFiat = this.util.banano.rawToMbanano(balanceAccount.balance).times(this.fiatPrice).toNumber();
+        balanceAccount.balanceRaw = new BigNumber(balanceAccount.balance).mod(this.banano);
       }
       this.totalTrackedBalance = this.totalTrackedBalance.plus(balanceAccount.balance);
       this.totalTrackedBalanceRaw = this.totalTrackedBalanceRaw.plus(balanceAccount.balanceRaw);
@@ -281,7 +281,7 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
-    // Remove spaces and convert to nano prefix
+    // Remove spaces and convert to banano prefix
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, '').replace('ban_', 'ban_');
 
     // If the name has been changed, make sure no other entries are using that name

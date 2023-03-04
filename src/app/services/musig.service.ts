@@ -3,9 +3,9 @@ import {UtilService} from './util.service';
 import { NotificationService } from './notification.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import * as nanocurrency from 'nanocurrency';
+import * as bananocurrency from 'bananocurrency';
 import { environment } from 'environments/environment';
-const base32 = require('nano-base32');
+const base32 = require('banano-base32');
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ const base32 = require('nano-base32');
 export class MusigService {
   // The multisig wasm library can be validated by running build-or-validate_musig_wasm.sh
   private wasmURL = environment.desktop ?
-    '../../../resources/app.asar/dist/assets/lib/musig-nano/musig_nano.wasm.b64' : '../../../assets/lib/musig-nano/musig_nano.wasm.b64';
+    '../../../resources/app.asar/dist/assets/lib/musig-banano/musig_banano.wasm.b64' : '../../../assets/lib/musig-banano/musig_banano.wasm.b64';
 
   wasm = null;
   wasmErrors = ['No error', 'Internal error', 'Invalid parameter(s)', 'Invalid Participant Input'];
@@ -129,7 +129,7 @@ export class MusigService {
     let addresses = [];
     if (runWithPubkeys && this.savedPublicKeys?.length > 1) {
       for (const pubKey of this.savedPublicKeys) {
-        addresses.push(nanocurrency.deriveAddress(pubKey, {useNanoPrefix: true}));
+        addresses.push(bananocurrency.deriveAddress(pubKey, {useBananoPrefix: true}));
       }
     } else {
       addresses = storedAccounts;
@@ -141,23 +141,23 @@ export class MusigService {
     for (let address of addresses) {
       address = address.trim();
       if (!address.startsWith('ban_') && !address.startsWith('ban_')) {
-        throw new Error('Nano addresses must start with ban_ or ban_');
+        throw new Error('Banano addresses must start with ban_ or ban_');
       }
       address = address.split('_', 2)[1];
       try {
         const bytes = base32.decode(address);
         if (bytes.length !== 37) {
-          throw new Error('Wrong nano address length');
+          throw new Error('Wrong banano address length');
         }
         const pubkey = bytes.subarray(0, 32);
         const checksum_ = this.util.account.getAccountChecksum(pubkey);
         if (!this.util.array.equalArrays(bytes.subarray(32), checksum_)) {
-          throw new Error('Invalid nano address checksum');
+          throw new Error('Invalid banano address checksum');
         }
         pubkeys.push(pubkey);
       } catch (err_) {
           console.error(err_.toString());
-          throw new Error('Invalid nano address (bad character?)');
+          throw new Error('Invalid banano address (bad character?)');
       }
     }
     const pubkeyPtrs = this.wasm.musig_malloc(pubkeys.length * 4);
@@ -198,10 +198,10 @@ export class MusigService {
     let multisigAccount = '';
     // Stage 0 (init)
     if (!this.musigStagePtr) {
-      if (!this.util.nano.isValidHash(privateKey)) {
+      if (!this.util.banano.isValidHash(privateKey)) {
         throw new Error('Invalid private key');
       }
-      if (!this.util.nano.isValidHash(blockHash)) {
+      if (!this.util.banano.isValidHash(blockHash)) {
         throw new Error('Invalid block hash');
       }
       const outPtr = this.wasm.musig_malloc(65);
@@ -262,7 +262,7 @@ export class MusigService {
           this.savedPublicKeys.push(input.substring(66, 130).toLowerCase());
         }
         // Add the public key from self
-        const pub = nanocurrency.derivePublicKey(privateKey);
+        const pub = bananocurrency.derivePublicKey(privateKey);
         if (this.savedPublicKeys.includes(pub.toLowerCase())) {
           throw new Error('You must use different private keys for each participant!');
         }

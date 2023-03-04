@@ -17,18 +17,18 @@ export class DeeplinkService {
   ) { }
 
   navigate(deeplink: string): boolean {
-    const ban_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|https):.+$/g;
+    const ban_scheme = /^(banano|bananorep|bananoseed|bananokey|bananosign|bananoprocess|https):.+$/g;
 
     if (this.util.account.isValidAccount(deeplink)) {
       // Got address, routing to send...
       this.router.navigate(['send'], {queryParams: {to: deeplink}});
 
-    } else if (this.util.nano.isValidSeed(deeplink)) {
+    } else if (this.util.banano.isValidSeed(deeplink)) {
       // Seed
       this.handleSeed(deeplink);
 
     } else if (ban_scheme.test(deeplink)) {
-      // This is a valid Nano scheme URI
+      // This is a valid Banano scheme URI
       const url = new URL(deeplink);
 
       // check if deeplink contains a full URL path
@@ -40,15 +40,15 @@ export class DeeplinkService {
           // address book import
           this.router.navigate(['import-address-book'], { queryParams: {hostname: url.hostname}, fragment: url.hash.slice(1)});
         }
-      } else if (url.protocol === 'nano:' && this.util.account.isValidAccount(url.pathname)) {
+      } else if (url.protocol === 'banano:' && this.util.account.isValidAccount(url.pathname)) {
         // Got address, routing to send...
         const amount = url.searchParams.get('amount');
         this.router.navigate(['send'], { queryParams: {
           to: url.pathname,
-          amount: amount ? this.util.nano.rawToMnano(amount) : null
+          amount: amount ? this.util.banano.rawToMbanano(amount) : null
         }});
 
-      } else if (url.protocol === 'nanorep:' && this.util.account.isValidAccount(url.pathname)) {
+      } else if (url.protocol === 'bananorep:' && this.util.account.isValidAccount(url.pathname)) {
         // Representative change
         this.router.navigate(['representatives'], { queryParams: {
           hideOverview: true,
@@ -56,16 +56,16 @@ export class DeeplinkService {
           representative: url.pathname
         }});
 
-      } else if (url.protocol === 'nanoseed:' && this.util.nano.isValidSeed(url.pathname)) {
+      } else if (url.protocol === 'bananoseed:' && this.util.banano.isValidSeed(url.pathname)) {
         // Seed
         this.handleSeed(url.pathname);
-      } else if (url.protocol === 'nanokey:' && this.util.nano.isValidHash(url.pathname)) {
+      } else if (url.protocol === 'bananokey:' && this.util.banano.isValidHash(url.pathname)) {
         // Private key
         this.handlePrivateKey(url.pathname);
-      } else if (url.protocol === 'nanosign:') {
+      } else if (url.protocol === 'bananosign:') {
           this.remoteSignService.navigateSignBlock(url);
 
-      } else if (url.protocol === 'nanoprocess:') {
+      } else if (url.protocol === 'bananoprocess:') {
           this.remoteSignService.navigateProcessBlock(url);
       }
 

@@ -14,7 +14,7 @@
     </ng-template>
     
     <div class="uk-margin-bottom uk-flex uk-flex-between">
-      <h2 class="uk-flex-1 uk-heading-divider uk-margin-remove">Receive Nano</h2>
+      <h2 class="uk-flex-1 uk-heading-divider uk-margin-remove">Receive Banano</h2>
       <div class="uk-flex-none uk-visible@s uk-flex uk-flex-top uk-margin-medium-left">
         <ng-container *ngTemplateOutlet="switchToMerchantModeButton"></ng-container>
       </div>
@@ -30,7 +30,7 @@
               <div class="form-account">
                 <select id="form-horizontal-select" class="uk-select" [(ngModel)]="pendingAccountModel" (change)="onSelectedAccountChange(pendingAccountModel)">
                   <option [value]="0">All Accounts</option>
-                  <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mnano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mnano,true' | amountsplit: 1 }} XNO)</option>
+                  <option *ngFor="let account of accounts" [value]="account.id">{{account.addressBookName ? account.addressBookName + ' - ' : '#' + account.index + ' - ' }} {{ account.id | squeeze }} ({{ account.balance | rai: 'mbanano,true' | amountsplit: 0 }}{{ account.balance | rai: 'mbanano,true' | amountsplit: 1 }} XNO)</option>
                 </select>
               </div>
             </div>
@@ -40,7 +40,7 @@
               <div class="form-amount">
                 <div class="uk-width-1-1 uk-inline">
                   <label class="uk-form-icon uk-link-reset uk-link-muted xno-symbol" for="form-horizontal-amount"></label>
-                  <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of XNO" maxlength="40">
+                  <input [(ngModel)]="amountBanano" [ngClass]="{ 'uk-form-danger': !validBanano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="bananoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of XNO" maxlength="40">
                 </div>
                 <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                   <div class="uk-width-1-1 uk-inline">
@@ -58,7 +58,7 @@
                 <img class="uk-position-absolute" [src]="qrCodeImage" alt="QR code">
                 <div class="qr-confirmation" [class]="qrSuccessClass">
                   <div uk-icon="icon: check; ratio: 5"></div>
-                  <span class="uk-text-large uk-text-center">Nano Received</span>
+                  <span class="uk-text-large uk-text-center">Banano Received</span>
                 </div>
                 <div style="padding-top: 100%"></div>
               </div>
@@ -72,7 +72,7 @@
             </ng-template>
             <div>
               <div class="uk-flex uk-flex-center uk-flex-middle uk-text-center qr-address" *ngIf="(pendingAccountModel !== '0')">
-                <app-nano-account-id [accountID]="pendingAccountModel" middle="break" class="nano-address-monospace uk-width-auto" style="max-width: 90%;"></app-nano-account-id>
+                <app-banano-account-id [accountID]="pendingAccountModel" middle="break" class="banano-address-monospace uk-width-auto" style="max-width: 90%;"></app-banano-account-id>
                 <a class="span-icon hide-on-small-viewports" ngxClipboard [cbContent]="pendingAccountModel" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a>
               </div>
               <div class="uk-margin-medium-top only-on-small-viewports nlt-button-group uk-flex uk-flex-column uk-flex-middle">
@@ -137,11 +137,11 @@
                 )
               )"
             >{{ transaction.destinationAddressBookName }}</div>
-            <app-nano-transaction-mobile
+            <app-banano-transaction-mobile
               [transaction]="transaction"
               [settingIdenticonsStyle]="settings.settings.identiconsStyle"
               (click)="showMobileMenuForTransaction(transaction)"
-            ></app-nano-transaction-mobile>
+            ></app-banano-transaction-mobile>
           </ng-container>
 
           <div class="rounded-area" *ngIf="!loadingIncomingTxList && !pendingBlocksForSelectedAccount.length">
@@ -175,15 +175,15 @@
                 <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + pending.account" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
                     <div class="identicon-name-row uk-text-truncate">
-                      <app-nano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                      <app-banano-identicon scale="6" [accountID]="pending.account" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="banano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-banano-identicon>
                       <div class="account-label uk-text-truncate" *ngIf="pending.addressBookName">{{ pending.addressBookName }}</div>
                     </div>
-                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                      <app-nano-account-id [accountID]="pending.account" middle="auto"></app-nano-account-id>
+                    <div class="banano-address-clickable banano-address-monospace uk-text-truncate">
+                      <app-banano-account-id [accountID]="pending.account" middle="auto"></app-banano-account-id>
                     </div>
                   </a>
                 </div>
-                <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                <div class="banano-address-actions uk-width-auto uk-flex uk-flex-bottom">
                   <ul class="uk-iconnav">
                     <li><a ngxClipboard [cbContent]="pending.account" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                   </ul>
@@ -198,15 +198,15 @@
                   <div class="uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                     <a [routerLink]="'/account/' + pending.destination" class="account-container uk-text-truncate" title="View Account Details" uk-tooltip>
                       <div class="identicon-name-row uk-text-truncate">
-                        <app-nano-identicon scale="6" [accountID]="pending.destination" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+                        <app-banano-identicon scale="6" [accountID]="pending.destination" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="banano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-banano-identicon>
                         <div class="account-label uk-text-truncate" *ngIf="pending.destinationAddressBookName">{{ pending.destinationAddressBookName }}</div>
                       </div>
-                      <div class="nano-address-clickable nano-address-monospace uk-text-truncate">
-                        <app-nano-account-id [accountID]="pending.destination" middle="auto"></app-nano-account-id>
+                      <div class="banano-address-clickable banano-address-monospace uk-text-truncate">
+                        <app-banano-account-id [accountID]="pending.destination" middle="auto"></app-banano-account-id>
                       </div>
                     </a>
                   </div>
-                  <div class="nano-address-actions uk-width-auto uk-flex uk-flex-bottom">
+                  <div class="banano-address-actions uk-width-auto uk-flex uk-flex-bottom">
                     <ul class="uk-iconnav">
                       <li><a ngxClipboard [cbContent]="pending.destination" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
@@ -222,8 +222,8 @@
             </ng-template>
             <td class="amount-column uk-text-middle uk-text-muted" [title]="('Incoming Transaction') + ( (pending.amountRaw && (pending.amountRaw > 0) ) ? ( ', +' + ( pending.amountRaw.toString(10) ) + ' raw' ) : '' )">
               <span class="uk-text-small">Ready to receive</span><br>
-              <span class="amount-integer">{{ pending.amount | rai: 'mnano,true' | amountsplit: 0 }}</span>
-              <span class="amount-fractional">{{ pending.amount | rai: 'mnano,true' | amountsplit: 1 }}</span>
+              <span class="amount-integer">{{ pending.amount | rai: 'mbanano,true' | amountsplit: 0 }}</span>
+              <span class="amount-fractional">{{ pending.amount | rai: 'mbanano,true' | amountsplit: 1 }}</span>
               <span class="currency-name">XNO</span>
               <div class="compact-actions-date">
                 <ng-template [ngTemplateOutlet]="transactionActions"></ng-template>
@@ -248,7 +248,7 @@
         <table class="uk-table uk-table-striped uk-table-small" *ngIf="settings.settings.minimumReceive">
           <thead>
             <tr class="uk-alert uk-alert-primary missing-accounts-hint">
-              <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Minimum Receive is set to <a class="hint-action" routerLink="/configure-app" routerLinkActive="active" *ngIf="( util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed().length > 24 ) else amountInRaw">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 0 }}{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mnano,true' | amountsplit: 1 }} XNO</a><ng-template #amountInRaw><a class="hint-action" routerLink="/configure-app" routerLinkActive="active">{{ util.nano.mnanoToRaw(this.settings.settings.minimumReceive).toFixed() }} raw</a></ng-template>, transactions below this amount will be hidden.</td>
+              <td colspan="4" style="text-align: center;"><span uk-icon="icon: info"></span> Minimum Receive is set to <a class="hint-action" routerLink="/configure-app" routerLinkActive="active" *ngIf="( util.banano.mbananoToRaw(this.settings.settings.minimumReceive).toFixed().length > 24 ) else amountInRaw">{{ util.banano.mbananoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mbanano,true' | amountsplit: 0 }}{{ util.banano.mbananoToRaw(this.settings.settings.minimumReceive).toFixed() | rai: 'mbanano,true' | amountsplit: 1 }} XNO</a><ng-template #amountInRaw><a class="hint-action" routerLink="/configure-app" routerLinkActive="active">{{ util.banano.mbananoToRaw(this.settings.settings.minimumReceive).toFixed() }} raw</a></ng-template>, transactions below this amount will be hidden.</td>
             </tr>
           </thead>
         </table>
@@ -263,12 +263,12 @@
   <div class="uk-modal-dialog">
     <div class="uk-modal-body">
       <div class="transactions-list-mobile">
-        <app-nano-transaction-mobile
+        <app-banano-transaction-mobile
           [isInteractable]="false"
           [transaction]="mobileTransactionData"
           [settingIdenticonsStyle]="settings.settings.identiconsStyle"
           *ngIf="mobileTransactionData"
-        ></app-nano-transaction-mobile>
+        ></app-banano-transaction-mobile>
       </div>
       <div class="uk-width-1-1" *ngIf="mobileTransactionData">
         <hr>
@@ -334,10 +334,10 @@
       </ng-container>
       <ng-container *ngIf="(inMerchantModePaymentComplete === false) && (inMerchantModeQR === false) && (pendingAccountModel !== '0')">
         <div class="identicon-name-row uk-text-truncate">
-          <app-nano-identicon scale="6" [accountID]="pendingAccountModel" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
+          <app-banano-identicon scale="6" [accountID]="pendingAccountModel" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="banano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-banano-identicon>
           <div class="account-label uk-text-truncate">{{ selectedAccountAddressBookName }}</div>
         </div>
-        <app-nano-account-id [accountID]="pendingAccountModel" middle="off" class="nano-address-monospace uk-width-auto"></app-nano-account-id>
+        <app-banano-account-id [accountID]="pendingAccountModel" middle="off" class="banano-address-monospace uk-width-auto"></app-banano-account-id>
         <button
           class="uk-width-auto uk-button uk-button-secondary uk-text-center nlt-icon-button uk-margin-small-top"
           type="button"
@@ -356,7 +356,7 @@
             <div class="form-amount">
               <div class="uk-width-1-1 uk-inline">
                 <label class="uk-form-icon uk-link-reset uk-link-muted xno-symbol" for="form-horizontal-amount"></label>
-                <input [(ngModel)]="amountNano" [ngClass]="{ 'uk-form-danger': !validNano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="nanoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of XNO" maxlength="40">
+                <input [(ngModel)]="amountBanano" [ngClass]="{ 'uk-form-danger': !validBanano }" [attr.disabled]="pendingAccountModel == '0' || null" autocomplete="off" class="uk-input" id="form-horizontal-amount" (input)="bananoAmountChange()" style="padding-left: 52px !important;" type="number" step="any" placeholder="Amount of XNO" maxlength="40">
               </div>
               <div style="margin-top: 10px;" *ngIf="settings.settings.displayCurrency">
                 <p class="text-half-muted" style="margin: 0 0 14px 0;">or</p>
@@ -379,24 +379,24 @@
       </ng-container>
       <ng-container *ngIf="(inMerchantModeQR === true)">
         <p class="uk-text-large uk-margin-remove-bottom">Send</p>
-        <p class="uk-text-large uk-text-primary uk-margin-remove-top" *ngIf="(amountNano === '')">
+        <p class="uk-text-large uk-text-primary uk-margin-remove-top" *ngIf="(amountBanano === '')">
           <span class="merchant-mode-currency-name">XNO</span>
         </p>
-        <p class="uk-text-large uk-text-primary uk-margin-remove-top" *ngIf="(amountNano !== '')">
+        <p class="uk-text-large uk-text-primary uk-margin-remove-top" *ngIf="(amountBanano !== '')">
           <span
             class="merchant-mode-amount-integer"
-          >{{ merchantModeRawRequestedQR | rai: 'mnano,true' | amountsplit: 0 }}</span>
+          >{{ merchantModeRawRequestedQR | rai: 'mbanano,true' | amountsplit: 0 }}</span>
           <span
             class="merchant-mode-amount-fractional"
-          >{{ merchantModeRawRequestedQR | rai: 'mnano,true' | amountsplit: 1 }}</span>
+          >{{ merchantModeRawRequestedQR | rai: 'mbanano,true' | amountsplit: 1 }}</span>
           <span class="merchant-mode-currency-name merchant-mode-currency-margin">XNO</span>
         </p>
         <p class="text-half-muted" style="margin: -16px 0 10px 0;">to</p>
-        <app-nano-account-id
+        <app-banano-account-id
           [accountID]="pendingAccountModel" middle="break"
-          class="nano-address-monospace uk-width-auto"
+          class="banano-address-monospace uk-width-auto"
           style="display: inline-block; max-width: 325px;"
-        ></app-nano-account-id>
+        ></app-banano-account-id>
         <div
           class="uk-width-1-1 uk-flex uk-flex-center uk-margin-top"
           style="margin-bottom: 40px;"
@@ -410,19 +410,19 @@
         >
           <div class="uk-card-body">
             <p
-              *ngIf="(amountNano === '')"
+              *ngIf="(amountBanano === '')"
               class="uk-text-large text-half-muted uk-margin-remove-bottom"
             >
               Received
             </p>
             <p
-              *ngIf="(amountNano !== '') && prompt.moreThanRequested"
+              *ngIf="(amountBanano !== '') && prompt.moreThanRequested"
               class="uk-text-large text-half-muted uk-margin-remove-bottom"
             >
               Received <span class="uk-text-success">more</span> than requested
             </p>
             <p
-              *ngIf="(amountNano !== '') && prompt.lessThanRequested"
+              *ngIf="(amountBanano !== '') && prompt.lessThanRequested"
               class="uk-text-large text-half-muted uk-margin-remove-bottom"
             >
               Received <span class="uk-text-warning">less</span> than requested
@@ -434,10 +434,10 @@
             >
               <span
                 class="merchant-mode-amount-integer"
-              >{{ prompt.amountRaw | rai: 'mnano,true' | amountsplit: 0 }}</span>
+              >{{ prompt.amountRaw | rai: 'mbanano,true' | amountsplit: 0 }}</span>
               <span
                 class="merchant-mode-amount-fractional"
-              >{{ prompt.amountRaw | rai: 'mnano,true' | amountsplit: 1 }}</span>
+              >{{ prompt.amountRaw | rai: 'mbanano,true' | amountsplit: 1 }}</span>
               <span class="merchant-mode-currency-name merchant-mode-currency-margin">XNO</span>
             </p>
             <div
@@ -504,10 +504,10 @@
         <p class="uk-text-large uk-text-success uk-margin-remove-top">
           <span
             class="merchant-mode-amount-integer"
-          >{{ merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 0 }}</span>
+          >{{ merchantModeRawReceivedTotal | rai: 'mbanano,true' | amountsplit: 0 }}</span>
           <span
             class="merchant-mode-amount-fractional"
-          >{{ merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 1 }}</span>
+          >{{ merchantModeRawReceivedTotal | rai: 'mbanano,true' | amountsplit: 1 }}</span>
           <span class="merchant-mode-currency-name merchant-mode-currency-margin">XNO</span>
         </p>
         <div
@@ -525,13 +525,13 @@
             ngxClipboard
             [cbContent]="(
                   'Amount Requested: '
-                + ( merchantModeRawRequestedTotal | rai: 'mnano,true' | amountsplit: 0 )
-                + ( merchantModeRawRequestedTotal | rai: 'mnano,true' | amountsplit: 1 )
+                + ( merchantModeRawRequestedTotal | rai: 'mbanano,true' | amountsplit: 0 )
+                + ( merchantModeRawRequestedTotal | rai: 'mbanano,true' | amountsplit: 1 )
                 + ' XNO'
                 + '\n\n'
                 + 'Amount Paid: '
-                + ( merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 0 )
-                + ( merchantModeRawReceivedTotal | rai: 'mnano,true' | amountsplit: 1 )
+                + ( merchantModeRawReceivedTotal | rai: 'mbanano,true' | amountsplit: 0 )
+                + ( merchantModeRawReceivedTotal | rai: 'mbanano,true' | amountsplit: 1 )
                 + ' XNO'
                 + '\n\n'
                 + 'Transaction ID\'s:'

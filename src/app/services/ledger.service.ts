@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import Nano from 'hw-app-nano';
+import Banano from 'hw-app-banano';
 import TransportU2F from '@ledgerhq/hw-transport-u2f';
 import TransportUSB from '@ledgerhq/hw-transport-webusb';
 import TransportHID from '@ledgerhq/hw-transport-webhid';
@@ -29,7 +29,7 @@ export const LedgerStatus = {
 
 export interface LedgerData {
   status: string;
-  nano: any|null;
+  banano: any|null;
   transport: Transport|null;
 }
 
@@ -55,7 +55,7 @@ export class LedgerService {
 
   ledger: LedgerData = {
     status: LedgerStatus.NOT_CONNECTED,
-    nano: null,
+    banano: null,
     transport: null,
   };
 
@@ -90,10 +90,10 @@ export class LedgerService {
     }
   }
 
-  // Scraps binding to any existing transport/nano object
+  // Scraps binding to any existing transport/banano object
   resetLedger() {
     this.ledger.transport = null;
-    this.ledger.nano = null;
+    this.ledger.banano = null;
   }
 
   /**
@@ -272,7 +272,7 @@ export class LedgerService {
         // LedgerLogs.listen((log: LedgerLog) => console.log(`Ledger: ${log.type}: ${log.message}`));
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        this.ledger.nano = new Nano(this.ledger.transport);
+        this.ledger.banano = new Banano(this.ledger.transport);
 
         resolve(this.ledger.transport);
       }).catch(reject);
@@ -329,7 +329,7 @@ export class LedgerService {
         }
       }
 
-      if (!this.ledger.transport || !this.ledger.nano) {
+      if (!this.ledger.transport || !this.ledger.banano) {
         return resolve(false);
       }
 
@@ -343,9 +343,9 @@ export class LedgerService {
         if (resolved) return;
         console.log(`Timeout expired, sending not connected`);
         this.ledger.status = LedgerStatus.NOT_CONNECTED;
-        this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to detect Nano Ledger application (Timeout)` });
+        this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Unable to detect Banano Ledger application (Timeout)` });
         if (!hideNotifications) {
-          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the nano application is open`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure it is unlocked and the banano application is open`);
         }
         resolved = true;
         return resolve(false);
@@ -353,13 +353,13 @@ export class LedgerService {
 
       // Try to load the app config
       try {
-        const ledgerConfig = await this.ledger.nano.getAppConfiguration();
+        const ledgerConfig = await this.ledger.banano.getAppConfiguration();
         resolved = true;
 
         if (!ledgerConfig) return resolve(false);
         if (ledgerConfig && ledgerConfig.version) {
           this.ledger.status = LedgerStatus.LOCKED;
-          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano app detected, but ledger is locked` });
+          this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Banano app detected, but ledger is locked` });
         }
       } catch (err) {
         console.log(`App config error: `, err);
@@ -367,7 +367,7 @@ export class LedgerService {
           this.resetLedger();
         }
         if (!hideNotifications && !resolved) {
-          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your Ledger is unlocked.  Restart the nano app on your Ledger if the error persists`);
+          this.notifications.sendWarning(`Unable to connect to the Ledger device.  Make sure your Ledger is unlocked.  Restart the banano app on your Ledger if the error persists`);
         }
         resolved = true;
         return resolve(false);
@@ -377,7 +377,7 @@ export class LedgerService {
       try {
         const accountDetails = await this.getLedgerAccount(0);
         this.ledger.status = LedgerStatus.READY;
-        this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Nano Ledger application connected` });
+        this.ledgerStatus$.next({ status: this.ledger.status, statusText: `Banano Ledger application connected` });
 
         if (!this.pollingLedger) {
           this.pollingLedger = true;
@@ -388,7 +388,7 @@ export class LedgerService {
         if (err.statusCode === STATUS_CODES.SECURITY_STATUS_NOT_SATISFIED) {
           this.ledger.status = LedgerStatus.LOCKED;
           if (!hideNotifications) {
-            this.notifications.sendWarning(`Ledger device locked.  Unlock and open the nano application`);
+            this.notifications.sendWarning(`Ledger device locked.  Unlock and open the banano application`);
           }
         }
       }
@@ -424,7 +424,7 @@ export class LedgerService {
     if (this.isDesktop) {
       return await this.updateCacheDesktop(accountIndex, cacheData, blockData.contents.signature);
     } else {
-      return await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.contents.signature);
+      return await this.ledger.banano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.contents.signature);
     }
   }
 
@@ -443,7 +443,7 @@ export class LedgerService {
     if (this.isDesktop) {
       return await this.updateCacheDesktop(accountIndex, cacheData, blockData.signature);
     } else {
-      return await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.signature);
+      return await this.ledger.banano.cacheBlock(this.ledgerPath(accountIndex), cacheData, blockData.signature);
     }
   }
 
@@ -455,7 +455,7 @@ export class LedgerService {
       return this.signBlockDesktop(accountIndex, blockData);
     } else {
       this.ledger.transport.setExchangeTimeout(this.waitTimeout);
-      return await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
+      return await this.ledger.banano.signBlock(this.ledgerPath(accountIndex), blockData);
     }
   }
 
@@ -466,7 +466,7 @@ export class LedgerService {
   async getLedgerAccountWeb(accountIndex: number, showOnScreen = false) {
     this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
     try {
-      return await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
+      return await this.ledger.banano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
     } catch (err) {
       throw err;
     }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js';
-import * as nanocurrency from 'nanocurrency';
+import * as bananocurrency from 'bananocurrency';
 
 const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
@@ -62,16 +62,16 @@ export class UtilService {
     getAccountChecksum: getAccountChecksum,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
-    isValidNanoAmount: isValidNanoAmount,
+    isValidBananoAmount: isValidBananoAmount,
     isValidAmount: isValidAmount,
   };
-  nano = {
-    mnanoToRaw: mnanoToRaw,
-    knanoToRaw: knanoToRaw,
-    nanoToRaw: nanoToRaw,
-    rawToMnano: rawToMnano,
-    rawToKnano: rawToKnano,
-    rawToNano: rawToNano,
+  banano = {
+    mbananoToRaw: mbananoToRaw,
+    kbananoToRaw: kbananoToRaw,
+    bananoToRaw: bananoToRaw,
+    rawToMbanano: rawToMbanano,
+    rawToKbanano: rawToKbanano,
+    rawToBanano: rawToBanano,
     hashStateBlock: hashStateBlock,
     isValidSeed: isValidSeed,
     isValidHash: isValidHash,
@@ -293,7 +293,7 @@ function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
 
-function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
+function getPublicAccountID(accountPublicKeyBytes, prefix = 'banano') {
   const accountHex = util.uint8.toHex(accountPublicKeyBytes);
   const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));
@@ -303,15 +303,15 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'nano') {
 }
 
 function isValidAccount(account: string): boolean {
-  return nanocurrency.checkAddress(account);
+  return bananocurrency.checkAddress(account);
 }
 
-// Check if a string is a numeric and larger than 0 but less than nano supply
-function isValidNanoAmount(val: string) {
+// Check if a string is a numeric and larger than 0 but less than banano supply
+function isValidBananoAmount(val: string) {
   // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val);
   if (isnum && String(val).slice(-1) !== '.') {
-    if (val !== '' && mnanoToRaw(val).gte(1) && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
+    if (val !== '' && mbananoToRaw(val).gte(1) && bananocurrency.checkAmount(mbananoToRaw(val).toString(10))) {
       return true;
     } else {
       return false;
@@ -323,16 +323,16 @@ function isValidNanoAmount(val: string) {
 
 // Check if valid raw amount
 function isValidAmount(val: string) {
-  return nanocurrency.checkAmount(val);
+  return bananocurrency.checkAmount(val);
 }
 
 function getAccountPublicKey(account) {
   if (!isValidAccount(account)) {
-    throw new Error(`Invalid nano account`);
+    throw new Error(`Invalid banano account`);
   }
   const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
-  if (!isValid) throw new Error(`Invalid nano account`);
+  if (!isValid) throw new Error(`Invalid banano account`);
 
   const key_uint4 = array_crop(uint5ToUint4(stringToUint5(account_crop.substring(0, 52))));
   const hash_uint4 = uint5ToUint4(stringToUint5(account_crop.substring(52, 60)));
@@ -345,7 +345,7 @@ function getAccountPublicKey(account) {
 }
 
 function setPrefix(account, prefix = 'xrb') {
-  if (prefix === 'nano') {
+  if (prefix === 'banano') {
     return account.replace('ban_', 'ban_');
   } else {
     return account.replace('ban_', 'ban_');
@@ -355,53 +355,53 @@ function setPrefix(account, prefix = 'xrb') {
 /**
  * Conversion functions
  */
-const mnano = 1000000000000000000000000000000;
-const knano = 1000000000000000000000000000;
-const nano  = 1000000000000000000000000;
-function mnanoToRaw(value) {
-  return new BigNumber(value).times(mnano);
+const mbanano = 1000000000000000000000000000000;
+const kbanano = 1000000000000000000000000000;
+const banano  = 1000000000000000000000000;
+function mbananoToRaw(value) {
+  return new BigNumber(value).times(mbanano);
 }
-function knanoToRaw(value) {
-  return new BigNumber(value).times(knano);
+function kbananoToRaw(value) {
+  return new BigNumber(value).times(kbanano);
 }
-function nanoToRaw(value) {
-  return new BigNumber(value).times(nano);
+function bananoToRaw(value) {
+  return new BigNumber(value).times(banano);
 }
-function rawToMnano(value) {
-  return new BigNumber(value).div(mnano);
+function rawToMbanano(value) {
+  return new BigNumber(value).div(mbanano);
 }
-function rawToKnano(value) {
-  return new BigNumber(value).div(knano);
+function rawToKbanano(value) {
+  return new BigNumber(value).div(kbanano);
 }
-function rawToNano(value) {
-  return new BigNumber(value).div(nano);
+function rawToBanano(value) {
+  return new BigNumber(value).div(banano);
 }
 
 /**
- * Nano functions
+ * Banano functions
  */
 function isValidSeed(val: string) {
-  return nanocurrency.checkSeed(val);
+  return bananocurrency.checkSeed(val);
 }
 
 function isValidHash(val: string) {
-  return nanocurrency.checkHash(val);
+  return bananocurrency.checkHash(val);
 }
 
 function isValidIndex(val: number) {
-  return nanocurrency.checkIndex(val);
+  return bananocurrency.checkIndex(val);
 }
 
 function isValidSignature(val: string) {
-  return nanocurrency.checkSignature(val);
+  return bananocurrency.checkSignature(val);
 }
 
 function isValidWork(val: string) {
-  return nanocurrency.checkWork(val);
+  return bananocurrency.checkWork(val);
 }
 
 function validateWork(blockHash: string, threshold: string, work: string) {
-  return nanocurrency.validateWork({blockHash: blockHash, threshold: threshold, work: work});
+  return bananocurrency.validateWork({blockHash: blockHash, threshold: threshold, work: work});
 }
 
 function hashStateBlock(block: StateBlock) {
@@ -528,16 +528,16 @@ const util = {
     getAccountChecksum: getAccountChecksum,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
-    isValidNanoAmount: isValidNanoAmount,
-    isValidAmount: isValidNanoAmount,
+    isValidBananoAmount: isValidBananoAmount,
+    isValidAmount: isValidBananoAmount,
   },
-  nano: {
-    mnanoToRaw: mnanoToRaw,
-    knanoToRaw: knanoToRaw,
-    nanoToRaw: nanoToRaw,
-    rawToMnano: rawToMnano,
-    rawToKnano: rawToKnano,
-    rawToNano: rawToNano,
+  banano: {
+    mbananoToRaw: mbananoToRaw,
+    kbananoToRaw: kbananoToRaw,
+    bananoToRaw: bananoToRaw,
+    rawToMbanano: rawToMbanano,
+    rawToKbanano: rawToKbanano,
+    rawToBanano: rawToBanano,
     hashStateBlock: hashStateBlock,
     isValidSeed: isValidSeed,
     isValidHash: isValidHash,

@@ -34,11 +34,11 @@ th.hidden-column, td.hidden-column {
 	vertical-align: middle;
 }
 
-.account-container:hover .nano-address-clickable {
+.account-container:hover .banano-address-clickable {
 	border-color: transparent;
 }
 
-.account-container .nano-address-clickable {
+.account-container .banano-address-clickable {
 	vertical-align: bottom;
 }
 

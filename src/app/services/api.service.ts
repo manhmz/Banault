@@ -7,7 +7,7 @@ import { TxType } from './util.service';
 
 @Injectable()
 export class ApiService {
-  storeKey = `nanovault-active-difficulty`;
+  storeKey = `bananovault-active-difficulty`;
   constructor(private http: HttpClient, private node: NodeService, private appSettings: AppSettingsService) { }
 
   private async request(action, data, skipError, url = '', validateResponse?): Promise<any> {

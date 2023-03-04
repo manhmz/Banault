@@ -8,7 +8,7 @@ import {ApiService} from '../../services/api.service';
 import {UtilService} from '../../services/util.service';
 import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
-import {NanoBlockService} from '../../services/nano-block.service';
+import {BananoBlockService} from '../../services/banano-block.service';
 import {PriceService} from '../../services/price.service';
 import {WebsocketService} from '../../services/websocket.service';
 import * as QRCode from 'qrcode';
@@ -24,7 +24,7 @@ import { TranslocoService } from '@ngneat/transloco';
 
 
 export class ReceiveComponent implements OnInit, OnDestroy {
-  nano = 1000000000000000000000000;
+  banano = 1000000000000000000000000;
   accounts = this.walletService.wallet.accounts;
 
   timeoutIdClearingRecentlyCopiedState: any = null;
@@ -43,9 +43,9 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   walletAccount: WalletAccount = null;
   selAccountInit = false;
   loadingIncomingTxList = false;
-  amountNano = '';
+  amountBanano = '';
   amountFiat = '';
-  validNano = true;
+  validBanano = true;
   validFiat = true;
   qrSuccessClass = '';
 
@@ -71,7 +71,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     private api: ApiService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
-    private nanoBlock: NanoBlockService,
+    private bananoBlock: BananoBlockService,
     public price: PriceService,
     private websocket: WebsocketService,
     private util: UtilService,
@@ -221,19 +221,19 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.loadingIncomingTxList = false;
   }
 
-  async nanoAmountChange() {
-    if (!this.validateNanoAmount() || Number(this.amountNano) === 0) {
+  async bananoAmountChange() {
+    if (!this.validateBananoAmount() || Number(this.amountBanano) === 0) {
       this.amountFiat = '';
       this.changeQRAmount();
       return;
     }
-    const rawAmount = this.util.nano.mnanoToRaw(this.amountNano || 0);
+    const rawAmount = this.util.banano.mbananoToRaw(this.amountBanano || 0);
 
     // This is getting hacky, but if their currency is bitcoin, use 6 decimals, if it is not, use 2
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
+    const fiatAmount = this.util.banano.rawToMbanano(rawAmount).times(this.price.price.lastPrice)
       .times(precision).floor().div(precision).toNumber();
 
     this.amountFiat = fiatAmount.toString();
@@ -243,27 +243,27 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   async fiatAmountChange() {
     if (!this.validateFiatAmount() || Number(this.amountFiat) === 0) {
-      this.amountNano = '';
+      this.amountBanano = '';
       this.changeQRAmount();
       return;
     }
-    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
-    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
-    const rawRounded = this.util.nano.nanoToRaw(nanoVal);
-    const nanoAmount = this.util.nano.rawToMnano(rawRounded);
+    const rawAmount = this.util.banano.mbananoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
+    const bananoVal = this.util.banano.rawToBanano(rawAmount).floor();
+    const rawRounded = this.util.banano.bananoToRaw(bananoVal);
+    const bananoAmount = this.util.banano.rawToMbanano(rawRounded);
 
-    this.amountNano = nanoAmount.toFixed();
+    this.amountBanano = bananoAmount.toFixed();
     this.changeQRAmount(rawRounded.toFixed());
-    this.validateNanoAmount();
+    this.validateBananoAmount();
   }
 
-  validateNanoAmount() {
-    if (!this.amountNano) {
-      this.validNano = true;
+  validateBananoAmount() {
+    if (!this.amountBanano) {
+      this.validBanano = true;
       return true;
     }
-    this.validNano = this.amountNano !== '-' && (this.util.account.isValidNanoAmount(this.amountNano) || Number(this.amountNano) === 0);
-    return this.validNano;
+    this.validBanano = this.amountBanano !== '-' && (this.util.account.isValidBananoAmount(this.amountBanano) || Number(this.amountBanano) === 0);
+    return this.validBanano;
   }
 
   validateFiatAmount() {
@@ -292,7 +292,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     if (account.length > 1) {
       this.qrAccount = account;
       this.qrCodeImage = null;
-      qrCode = await QRCode.toDataURL(`nano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
+      qrCode = await QRCode.toDataURL(`banano:${account}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
     }
     this.qrCodeImage = qrCode;
   }
@@ -307,7 +307,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     }
     if (this.qrAccount.length > 1) {
       this.qrCodeImage = null;
-      qrCode = await QRCode.toDataURL(`nano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
+      qrCode = await QRCode.toDataURL(`banano:${this.qrAccount}${this.qrAmount ? `?amount=${this.qrAmount.toString(10)}` : ''}`, {scale: 7});
       this.qrCodeImage = qrCode;
     }
   }
@@ -319,7 +319,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
 
   resetAmount() {
-    this.amountNano = '';
+    this.amountBanano = '';
     this.amountFiat = '';
     this.changeQRAmount();
   }
@@ -350,13 +350,13 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     receivableBlock.loading = true;
 
     const createdReceiveBlockHash =
-      await this.nanoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
+      await this.bananoBlock.generateReceive(walletAccount, sourceBlock, this.walletService.isLedgerWallet());
 
     if (createdReceiveBlockHash) {
       receivableBlock.received = true;
       this.mobileTransactionMenuModal.hide();
       this.notificationService.removeNotification('success-receive');
-      this.notificationService.sendSuccess(`Successfully received nano!`, { identifier: 'success-receive' });
+      this.notificationService.sendSuccess(`Successfully received banano!`, { identifier: 'success-receive' });
       // pending has been processed, can be removed from the list
       // list also updated with reloadBalances but not if called too fast
       this.walletService.removePendingBlock(receivableBlock.hash);
@@ -400,7 +400,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   getRawAmountWithoutTinyRaws(rawAmountWithTinyRaws) {
     const tinyRaws =
-      rawAmountWithTinyRaws.mod(this.nano);
+      rawAmountWithTinyRaws.mod(this.banano);
 
     return rawAmountWithTinyRaws.minus(tinyRaws);
   }
@@ -428,7 +428,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
   }
 
   merchantModeShowQR() {
-    const isRequestingAnyAmount = (this.validNano === false || Number(this.amountNano) === 0);
+    const isRequestingAnyAmount = (this.validBanano === false || Number(this.amountBanano) === 0);
 
     if(isRequestingAnyAmount === true) {
       this.resetAmount();
@@ -437,12 +437,12 @@ export class ReceiveComponent implements OnInit, OnDestroy {
     this.merchantModeRawRequestedTotal =
         (isRequestingAnyAmount === true)
       ? new BigNumber(0)
-      : this.util.nano.mnanoToRaw(this.amountNano);
+      : this.util.banano.mbananoToRaw(this.amountBanano);
 
     this.merchantModeRawRequestedQR =
         (isRequestingAnyAmount === true)
       ? new BigNumber(0)
-      : this.util.nano.mnanoToRaw(this.amountNano);
+      : this.util.banano.mbananoToRaw(this.amountBanano);
 
     this.merchantModeSeenBlockHashes =
       this.pendingBlocksForSelectedAccount.reduce(
@@ -486,7 +486,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
         moreThanRequested: receivedAmount.gt(requestedAmount),
         lessThanRequested: receivedAmount.lt(requestedAmount),
         amountRaw: receivedAmountWithTinyRaws,
-        amountHiddenRaw: receivedAmountWithTinyRaws.mod(this.nano),
+        amountHiddenRaw: receivedAmountWithTinyRaws.mod(this.banano),
         transactionHash: transaction.hash,
       }
 
@@ -523,7 +523,7 @@ export class ReceiveComponent implements OnInit, OnDestroy {
 
   merchantModeMarkCompleteWithAmount(amountRaw) {
     this.merchantModeRawReceivedTotal = amountRaw;
-    this.merchantModeRawReceivedTotalHiddenRaw = amountRaw.mod(this.nano);
+    this.merchantModeRawReceivedTotalHiddenRaw = amountRaw.mod(this.banano);
 
     this.inMerchantModePaymentComplete = true;
     this.inMerchantModeQR = false;

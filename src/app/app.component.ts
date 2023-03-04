@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
 
   wallet = this.walletService.wallet;
   node = this.nodeService.node;
-  nanoPrice = this.price.price;
+  bananoPrice = this.price.price;
   fiatTimeout = 5 * 60 * 1000; // Update fiat prices every 5 minutes
   inactiveSeconds = 0;
   innerWidth = 0;
@@ -86,7 +86,7 @@ export class AppComponent implements OnInit {
     this.updateAppTheme();
 
     // New for v19: Patch saved ban_ prefixes to ban_
-    await this.patchXrbToNanoPrefixData();
+    await this.patchXrbToBananoPrefixData();
 
     // set translation language
     this.translate.setActiveLang(this.settings.settings.language);
@@ -204,7 +204,7 @@ export class AppComponent implements OnInit {
       if (!this.settings.settings.serverAPI) return;
       await this.updateFiatPrices();
     } catch (err) {
-      this.notifications.sendWarning(`There was an issue retrieving latest nano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
+      this.notifications.sendWarning(`There was an issue retrieving latest banano price.  Ensure your AdBlocker is disabled on this page then reload to see accurate FIAT values.`, { length: 0, identifier: `price-adblock` });
     }
   }
 
@@ -225,7 +225,7 @@ export class AppComponent implements OnInit {
     This is important as it looks through saved data using hardcoded ban_ prefixes
     (Your wallet, address book, rep list, etc) and updates them to ban_ prefix for v19 RPC
    */
-  async patchXrbToNanoPrefixData() {
+  async patchXrbToBananoPrefixData() {
     // If wallet is version 2, data has already been patched.  Otherwise, patch all data
     if (this.settings.settings.walletVersion >= 2) return;
 
@@ -304,18 +304,18 @@ export class AppComponent implements OnInit {
     const searchData = this.searchData.trim();
     if (!searchData.length) return;
 
-    const isValidNanoAccount = (
+    const isValidBananoAccount = (
         ( searchData.startsWith('ban_') || searchData.startsWith('ban_') )
       && this.util.account.isValidAccount(searchData)
     );
 
-    if (isValidNanoAccount === true) {
+    if (isValidBananoAccount === true) {
       this.router.navigate(['account', searchData]);
       this.searchData = '';
       return;
     }
 
-    const isValidBlockHash = this.util.nano.isValidHash(searchData);
+    const isValidBlockHash = this.util.banano.isValidHash(searchData);
 
     if (isValidBlockHash === true) {
       const blockHash = searchData.toUpperCase();
@@ -324,7 +324,7 @@ export class AppComponent implements OnInit {
       return;
     }
 
-    this.notifications.sendWarning(`Invalid nano address or block hash! Please double check your input`);
+    this.notifications.sendWarning(`Invalid banano address or block hash! Please double check your input`);
   }
 
   updateIdleTime() {
@@ -337,7 +337,7 @@ export class AppComponent implements OnInit {
       return;
     }
     this.walletService.reloadBalances();
-    this.notifications.sendInfo(`Attempting to reconnect to nano node`);
+    this.notifications.sendInfo(`Attempting to reconnect to banano node`);
   }
 
   async updateFiatPrices() {

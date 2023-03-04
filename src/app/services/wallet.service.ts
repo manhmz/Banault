@@ -7,7 +7,7 @@ import {AddressBookService} from './address-book.service';
 import * as CryptoJS from 'crypto-js';
 import {WorkPoolService} from './work-pool.service';
 import {WebsocketService} from './websocket.service';
-import {NanoBlockService} from './nano-block.service';
+import {BananoBlockService} from './banano-block.service';
 import {NotificationService} from './notification.service';
 import {AppSettingsService} from './app-settings.service';
 import {PriceService} from './price.service';
@@ -93,8 +93,8 @@ export interface WalletApiAccount extends BaseApiAccount {
 
 @Injectable()
 export class WalletService {
-  nano = 1000000000000000000000000;
-  storeKey = `nanovault-wallet`;
+  banano = 1000000000000000000000000;
+  storeKey = `bananovault-wallet`;
 
   wallet: FullWallet = {
     type: 'seed',
@@ -135,7 +135,7 @@ export class WalletService {
     private price: PriceService,
     private workPool: WorkPoolService,
     private websocket: WebsocketService,
-    private nanoBlock: NanoBlockService,
+    private bananoBlock: BananoBlockService,
     private ledgerService: LedgerService,
     private noZerosPipe: NoPaddingZerosPipe,
     private notifications: NotificationService) {
@@ -144,7 +144,7 @@ export class WalletService {
       console.log('New Transaction', transaction);
       let shouldNotify = false;
       if (this.appSettings.settings.minimumReceive) {
-        const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+        const minAmount = this.util.banano.mbananoToRaw(this.appSettings.settings.minimumReceive);
         if ((new BigNumber(transaction.amount)).gte(minAmount)) {
           shouldNotify = true;
         }
@@ -186,7 +186,7 @@ export class WalletService {
       (this.addressBook.getTransactionTrackingById(transaction.block.link_as_account) ||
       this.addressBook.getTransactionTrackingById(transaction.block.account))) {
         if (shouldNotify || transaction.block.subtype === 'change') {
-          const trackedAmount = this.util.nano.rawToMnano(transaction.amount);
+          const trackedAmount = this.util.banano.rawToMbanano(transaction.amount);
           // Save hash so we can ignore duplicate messages if subscribing to both send and receive
           if (this.trackedHashes.indexOf(transaction.hash) !== -1) return; // Already notified this block
           this.trackedHashes.push(transaction.hash);
@@ -251,7 +251,7 @@ export class WalletService {
       let aboveMinimumReceive = true;
 
       if (this.appSettings.settings.minimumReceive) {
-        const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+        const minAmount = this.util.banano.mbananoToRaw(this.appSettings.settings.minimumReceive);
         aboveMinimumReceive = txAmount.gte(minAmount);
       }
 
@@ -260,8 +260,8 @@ export class WalletService {
 
         if (isNewBlock === true) {
           this.wallet.pending = this.wallet.pending.plus(txAmount);
-          this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.nano));
-          this.wallet.pendingFiat += this.util.nano.rawToMnano(txAmount).times(this.price.price.lastPrice).toNumber();
+          this.wallet.pendingRaw = this.wallet.pendingRaw.plus(txAmount.mod(this.banano));
+          this.wallet.pendingFiat += this.util.banano.rawToMbanano(txAmount).times(this.price.price.lastPrice).toNumber();
           this.wallet.hasPending = true;
         }
       }
@@ -570,11 +570,11 @@ export class WalletService {
     const account: any = await this.ledgerService.getLedgerAccount(index);
 
     const accountID = account.address;
-    const nanoAccountID = accountID.replace('ban_', 'ban_');
-    const addressBookName = this.addressBook.getAccountName(nanoAccountID);
+    const bananoAccountID = accountID.replace('ban_', 'ban_');
+    const addressBookName = this.addressBook.getAccountName(bananoAccountID);
 
     const newAccount: WalletAccount = {
-      id: nanoAccountID,
+      id: bananoAccountID,
       frontier: null,
       secret: null,
       keyPair: null,
@@ -693,12 +693,12 @@ export class WalletService {
     const fiatPrice = this.price.price.lastPrice;
 
     this.wallet.accounts.forEach(account => {
-      account.balanceFiat = this.util.nano.rawToMnano(account.balance).times(fiatPrice).toNumber();
-      account.pendingFiat = this.util.nano.rawToMnano(account.pending).times(fiatPrice).toNumber();
+      account.balanceFiat = this.util.banano.rawToMbanano(account.balance).times(fiatPrice).toNumber();
+      account.pendingFiat = this.util.banano.rawToMbanano(account.pending).times(fiatPrice).toNumber();
     });
 
-    this.wallet.balanceFiat = this.util.nano.rawToMnano(this.wallet.balance).times(fiatPrice).toNumber();
-    this.wallet.pendingFiat = this.util.nano.rawToMnano(this.wallet.pending).times(fiatPrice).toNumber();
+    this.wallet.balanceFiat = this.util.banano.rawToMbanano(this.wallet.balance).times(fiatPrice).toNumber();
+    this.wallet.pendingFiat = this.util.banano.rawToMbanano(this.wallet.pending).times(fiatPrice).toNumber();
   }
 
   resetBalances() {
@@ -750,9 +750,9 @@ export class WalletService {
       walletAccount.balance = new BigNumber(accounts.balances[accountID].balance);
       const accountBalancePendingInclUnconfirmed = new BigNumber(accounts.balances[accountID].pending);
 
-      walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.nano);
+      walletAccount.balanceRaw = new BigNumber(walletAccount.balance).mod(this.banano);
 
-      walletAccount.balanceFiat = this.util.nano.rawToMnano(walletAccount.balance).times(fiatPrice).toNumber();
+      walletAccount.balanceFiat = this.util.banano.rawToMbanano(walletAccount.balance).times(fiatPrice).toNumber();
 
       walletAccount.frontier = frontiers.frontiers[accountID] || null;
 
@@ -764,7 +764,7 @@ export class WalletService {
       let pending;
 
       if (this.appSettings.settings.minimumReceive) {
-        const minAmount = this.util.nano.mnanoToRaw(this.appSettings.settings.minimumReceive);
+        const minAmount = this.util.banano.mbananoToRaw(this.appSettings.settings.minimumReceive);
         pending = await this.api.accountsPendingLimitSorted(this.wallet.accounts.map(a => a.id), minAmount.toString(10));
       } else {
         pending = await this.api.accountsPendingSorted(this.wallet.accounts.map(a => a.id));
@@ -801,8 +801,8 @@ export class WalletService {
             }
 
             walletAccount.pending = accountPending;
-            walletAccount.pendingRaw = accountPending.mod(this.nano);
-            walletAccount.pendingFiat = this.util.nano.rawToMnano(accountPending).times(fiatPrice).toNumber();
+            walletAccount.pendingRaw = accountPending.mod(this.banano);
+            walletAccount.pendingFiat = this.util.banano.rawToMbanano(accountPending).times(fiatPrice).toNumber();
 
             // If there is a pending, it means we want to add to work cache as receive-threshold
             if (walletAccount.pending.gt(0)) {
@@ -849,11 +849,11 @@ export class WalletService {
     this.wallet.balance = walletBalance;
     this.wallet.pending = walletPendingAboveThresholdConfirmed;
 
-    this.wallet.balanceRaw = new BigNumber(walletBalance).mod(this.nano);
-    this.wallet.pendingRaw = new BigNumber(walletPendingAboveThresholdConfirmed).mod(this.nano);
+    this.wallet.balanceRaw = new BigNumber(walletBalance).mod(this.banano);
+    this.wallet.pendingRaw = new BigNumber(walletPendingAboveThresholdConfirmed).mod(this.banano);
 
-    this.wallet.balanceFiat = this.util.nano.rawToMnano(walletBalance).times(fiatPrice).toNumber();
-    this.wallet.pendingFiat = this.util.nano.rawToMnano(walletPendingAboveThresholdConfirmed).times(fiatPrice).toNumber();
+    this.wallet.balanceFiat = this.util.banano.rawToMbanano(walletBalance).times(fiatPrice).toNumber();
+    this.wallet.pendingFiat = this.util.banano.rawToMbanano(walletPendingAboveThresholdConfirmed).times(fiatPrice).toNumber();
 
     // eslint-disable-next-line
     this.wallet.hasPending = walletPendingAboveThresholdConfirmed.gt(0);
@@ -1013,12 +1013,12 @@ export class WalletService {
       return; // Dispose of the block, no matching account
     }
 
-    const newHash = await this.nanoBlock.generateReceive(walletAccount, nextBlock.hash, this.isLedgerWallet());
+    const newHash = await this.bananoBlock.generateReceive(walletAccount, nextBlock.hash, this.isLedgerWallet());
     if (newHash) {
       if (this.successfulBlocks.length >= 15) this.successfulBlocks.shift();
       this.successfulBlocks.push(nextBlock.hash);
 
-      const receiveAmount = this.util.nano.rawToMnano(nextBlock.amount);
+      const receiveAmount = this.util.banano.rawToMbanano(nextBlock.amount);
       this.notifications.removeNotification('success-receive');
       this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : this.noZerosPipe.transform(receiveAmount.toFixed(6)) } XNO!`, { identifier: 'success-receive' });
 

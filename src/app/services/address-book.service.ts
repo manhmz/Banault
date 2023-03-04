@@ -12,7 +12,7 @@ interface AddressBookEntry {
 
 @Injectable()
 export class AddressBookService {
-  storeKey = `nanovault-addressbook`;
+  storeKey = `bananovault-addressbook`;
 
   addressBook: AddressBookEntry[] = [];
 

@@ -32,11 +32,11 @@ interface AppSettings {
 
 @Injectable()
 export class AppSettingsService {
-  storeKey = `nanovault-appsettings`;
+  storeKey = `bananovault-appsettings`;
 
   settings: AppSettings = {
     language: null,
-    displayDenomination: 'mnano',
+    displayDenomination: 'mbanano',
     // displayPrefix: 'xrb',
     walletStore: 'localStorage',
     displayCurrency: 'USD',
@@ -55,7 +55,7 @@ export class AppSettingsService {
     minimumReceive: '0.000001',
     walletVersion: 1,
     lightModeEnabled: false,
-    identiconsStyle: 'nanoidenticons',
+    identiconsStyle: 'bananoidenticons',
   };
 
   serverOptions = [
@@ -68,18 +68,18 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'My Nano Ninja',
+      name: 'My Banano Ninja',
       value: 'ninja',
-      api: 'https://mynano.ninja/api/node',
-      ws: 'wss://ws.mynano.ninja',
+      api: 'https://mybanano.ninja/api/node',
+      ws: 'wss://ws.mybanano.ninja',
       auth: null,
       shouldRandom: true,
     },
     {
-      name: 'Nanos.cc',
-      value: 'nanos',
-      api: 'https://nault.nanos.cc/proxy',
-      ws: 'wss://nault-ws.nanos.cc',
+      name: 'Bananos.cc',
+      value: 'bananos',
+      api: 'https://nault.bananos.cc/proxy',
+      ws: 'wss://nault-ws.bananos.cc',
       auth: null,
       shouldRandom: true,
     },
@@ -108,9 +108,9 @@ export class AppSettingsService {
       shouldRandom: false,
     },
     {
-      name: 'NanoCrawler',
-      value: 'nanocrawler',
-      api: 'https://vault.nanocrawler.cc/api/node-api',
+      name: 'BananoCrawler',
+      value: 'bananocrawler',
+      api: 'https://vault.bananocrawler.cc/api/node-api',
       ws: null,
       auth: null,
       shouldRandom: false,
@@ -139,8 +139,8 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    'proxy.nanos.cc/proxy',
-    'node.somenano.com'
+    'proxy.bananos.cc/proxy',
+    'node.somebanano.com'
   ]);
 
   constructor(
@@ -229,7 +229,7 @@ export class AppSettingsService {
     localStorage.removeItem(this.storeKey);
     this.settings = {
       language: 'en',
-      displayDenomination: 'mnano',
+      displayDenomination: 'mbanano',
       // displayPrefix: 'xrb',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
@@ -248,11 +248,11 @@ export class AppSettingsService {
       minimumReceive: '0.000001',
       walletVersion: 1,
       lightModeEnabled: false,
-      identiconsStyle: 'nanoidenticons',
+      identiconsStyle: 'bananoidenticons',
     };
   }
 
-  // Get the base URL part of the serverAPI, e.g. https://nanovault.io from https://nanovault.io/api/node-api.
+  // Get the base URL part of the serverAPI, e.g. https://bananovault.io from https://bananovault.io/api/node-api.
   getServerApiBaseUrl(): string {
     const u = url.parse(this.settings.serverAPI);
     u.pathname = '/';

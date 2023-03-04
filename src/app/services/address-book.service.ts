@@ -39,8 +39,13 @@ export class AddressBookService {
     const addressBook = JSON.parse(addressBookStore);
 
     const newAddressBook = addressBook.map(entry => {
+<<<<<<< HEAD
       if (entry.account.indexOf('ban_') !== -1) {
         entry.account = entry.account.replace('ban_', 'ban_');
+=======
+      if (entry.account.indexOf('xrb_') !== -1) {
+        entry.account = entry.account.replace('xrb_', 'ban_');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       }
       return entry;
     });

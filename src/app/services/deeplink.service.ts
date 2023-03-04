@@ -17,7 +17,11 @@ export class DeeplinkService {
   ) { }
 
   navigate(deeplink: string): boolean {
+<<<<<<< HEAD
     const ban_scheme = /^(banano|bananorep|bananoseed|bananokey|bananosign|bananoprocess|https):.+$/g;
+=======
+    const ban_scheme = /^(nano|nanorep|nanoseed|nanokey|nanosign|nanoprocess|https):.+$/g;
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
     if (this.util.account.isValidAccount(deeplink)) {
       // Got address, routing to send...
@@ -28,7 +32,11 @@ export class DeeplinkService {
       this.handleSeed(deeplink);
 
     } else if (ban_scheme.test(deeplink)) {
+<<<<<<< HEAD
       // This is a valid Banano scheme URI
+=======
+      // This is a valid Nano scheme URI
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       const url = new URL(deeplink);
 
       // check if deeplink contains a full URL path

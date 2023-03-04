@@ -20,7 +20,11 @@ export class QrModalComponent implements OnInit {
   @Input() type: QRType;
   availableDevices: MediaDeviceInfo[];
   currentDevice: MediaDeviceInfo = null;
+<<<<<<< HEAD
   ban_scheme = /^(xrb|banano|bananorep|bananoseed|bananokey):.+$/g;
+=======
+  ban_scheme = /^(xrb|nano|nanorep|nanoseed|nanokey):.+$/g;
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
   formatsEnabled: BarcodeFormat[] = [
     BarcodeFormat.CODE_128,
@@ -71,7 +75,11 @@ export class QrModalComponent implements OnInit {
       type = 'hash';
       content = resultString;
     } else if (this.ban_scheme.test(resultString)) {
+<<<<<<< HEAD
       // This is a valid Banano scheme URI
+=======
+      // This is a valid Nano scheme URI
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       const url = new URL(resultString);
       content = url.pathname;
 

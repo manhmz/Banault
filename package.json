@@ -130,9 +130,15 @@
       "extendInfo": {
         "CFBundleURLTypes": [
           {
+<<<<<<< HEAD
             "CFBundleURLName": "banano",
             "CFBundleURLSchemes": [
               "banano"
+=======
+            "CFBundleURLName": "ban",
+            "CFBundleURLSchemes": [
+              "ban"
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
             ]
           }
         ]
@@ -146,6 +152,7 @@
       }
     },
     "protocols": {
+<<<<<<< HEAD
       "name": "banano",
       "schemes": [
         "banano",
@@ -154,6 +161,16 @@
         "bananokey",
         "bananosign",
         "bananoprocess"
+=======
+      "name": "ban",
+      "schemes": [
+        "ban",
+        "nanorep",
+        "nanoseed",
+        "nanokey",
+        "nanosign",
+        "nanoprocess"
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       ],
       "role": "Viewer"
     }

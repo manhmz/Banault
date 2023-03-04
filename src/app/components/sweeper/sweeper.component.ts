@@ -218,7 +218,11 @@ export class SweeperComponent implements OnInit {
   checkMasterKey(key) {
     // validate banano seed or private key
     if (key.length === 64) {
+<<<<<<< HEAD
       if (bananocurrency.checkSeed(key)) {
+=======
+      if (nanocurrency.checkSeed(key)) {
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         return 'ban_seed';
       }
     }
@@ -258,9 +262,15 @@ export class SweeperComponent implements OnInit {
       // create the block with the work found
       const block = bananocurrency.createBlock(privKey, {balance: '0', representative: this.representative,
       work: work, link: this.destinationAccount, previous: previous});
+<<<<<<< HEAD
       // replace xrb with banano (old library)
       block.block.account = block.block.account.replace('xrb', 'banano');
       block.block.link_as_account = block.block.link_as_account.replace('xrb', 'banano');
+=======
+      // replace xrb with nano (old library)
+      block.block.account = block.block.account.replace('xrb', 'ban');
+      block.block.link_as_account = block.block.link_as_account.replace('xrb', 'ban');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
       // publish block for each iteration
       const data = await this.api.process(block.block, TxType.send);
@@ -308,9 +318,15 @@ export class SweeperComponent implements OnInit {
       // create the block with the work found
       const block = bananocurrency.createBlock(this.privKey, {balance: this.adjustedBalance, representative: this.representative,
       work: work, link: key, previous: this.previous});
+<<<<<<< HEAD
       // replace xrb with banano (old library)
       block.block.account = block.block.account.replace('xrb', 'banano');
       block.block.link_as_account = block.block.link_as_account.replace('xrb', 'banano');
+=======
+      // replace xrb with nano (old library)
+      block.block.account = block.block.account.replace('xrb', 'ban');
+      block.block.link_as_account = block.block.link_as_account.replace('xrb', 'ban');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       // new previous
       this.previous = block.hash;
 
@@ -378,9 +394,15 @@ export class SweeperComponent implements OnInit {
       Object.keys(data.blocks).forEach(function(key) {
         raw = this.util.big.add(raw, data.blocks[key].amount);
       }.bind(this));
+<<<<<<< HEAD
       const bananoAmount = this.util.banano.rawToMbanano(raw);
       const pending = {count: Object.keys(data.blocks).length, raw: raw, XNO: bananoAmount, blocks: data.blocks};
       const row = 'Found ' + pending.count + ' pending containing total ' + pending.XNO + ' XNO';
+=======
+      const nanoAmount = this.util.nano.rawToMnano(raw);
+      const pending = {count: Object.keys(data.blocks).length, raw: raw, BAN: nanoAmount, blocks: data.blocks};
+      const row = 'Found ' + pending.count + ' pending containing total ' + pending.BAN + ' BAN';
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       this.appendLog(row);
 
       // create receive blocks for all pending
@@ -496,7 +518,11 @@ export class SweeperComponent implements OnInit {
         }
       }
 
+<<<<<<< HEAD
       // banano seed or private key
+=======
+      // nano seed or private key
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       if (keyType === 'ban_seed' || seed !== '' || keyType === 'bip39_seed') {
         // check if a private key first (no index)
         this.appendLog('Checking if input is a private key');

@@ -293,7 +293,11 @@ function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
 
+<<<<<<< HEAD
 function getPublicAccountID(accountPublicKeyBytes, prefix = 'banano') {
+=======
+function getPublicAccountID(accountPublicKeyBytes, prefix = 'ban') {
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   const accountHex = util.uint8.toHex(accountPublicKeyBytes);
   const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));
@@ -327,6 +331,7 @@ function isValidAmount(val: string) {
 }
 
 function getAccountPublicKey(account) {
+<<<<<<< HEAD
   if (!isValidAccount(account)) {
     throw new Error(`Invalid banano account`);
   }
@@ -334,6 +339,10 @@ function getAccountPublicKey(account) {
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
   if (!isValid) throw new Error(`Invalid banano account`);
 
+=======
+  const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
+  const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   const key_uint4 = array_crop(uint5ToUint4(stringToUint5(account_crop.substring(0, 52))));
   const hash_uint4 = uint5ToUint4(stringToUint5(account_crop.substring(52, 60)));
   const key_array = uint4ToUint8(key_uint4);
@@ -345,10 +354,17 @@ function getAccountPublicKey(account) {
 }
 
 function setPrefix(account, prefix = 'xrb') {
+<<<<<<< HEAD
   if (prefix === 'banano') {
     return account.replace('ban_', 'ban_');
   } else {
     return account.replace('ban_', 'ban_');
+=======
+  if (prefix === 'ban') {
+    return account.replace('xrb_', 'ban_');
+  } else {
+    return account.replace('ban_', 'xrb_');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   }
 }
 

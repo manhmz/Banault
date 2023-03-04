@@ -26,6 +26,7 @@
 
         <div class="advanced-options" *ngIf="showAdvancedOptions">
           <span [title]="( totalTrackedBalanceRaw.gt(0) ? ( '+' + ( totalTrackedBalanceRaw.toString(10) ) + ' raw' ) : '' )">
+<<<<<<< HEAD
             <span class="amount-integer">{{ totalTrackedBalance | rai: 'mbanano,true' | amountsplit: 0 }}</span>
             <span class="amount-fractional">{{ totalTrackedBalance | rai: 'mbanano,true' | amountsplit: 1 }}</span>
             <span class="currency-name">XNO</span>
@@ -33,6 +34,15 @@
           <div *ngIf="totalTrackedPending.gt(0)" class="incoming-label">
             <div class="text-snippet">{{ 'general.new' | transloco }}</div>
             <div class="text-full">+{{ totalTrackedPending | rai: 'mbanano,true' | amountsplit: 0 }}{{ totalTrackedPending | rai: 'mbanano,true' | amountsplit: 1 }} XNO</div>
+=======
+            <span class="amount-integer">{{ totalTrackedBalance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+            <span class="amount-fractional">{{ totalTrackedBalance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+            <span class="currency-name">BAN</span>
+          </span>
+          <div *ngIf="totalTrackedPending.gt(0)" class="incoming-label">
+            <div class="text-snippet">{{ 'general.new' | transloco }}</div>
+            <div class="text-full">+{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 0 }}{{ totalTrackedPending | rai: 'mnano,true' | amountsplit: 1 }} BAN</div>
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
           </div>
           <div class="account-amounts-converted uk-width-1-1 text-half-muted">
             {{ totalTrackedBalanceFiat | fiat: appSettings.settings.displayCurrency }}
@@ -107,6 +117,7 @@
                       <ng-container *ngIf="(walletService.wallet.updatingBalance === false) else balanceLoading">
                         <div class="account-amounts-primary uk-width-1-1">
                           <span [title]="( accounts[addressBook.account]?.balanceRaw.gt(0) ? ( '+' + ( accounts[addressBook.account]?.balanceRaw.toString(10) ) + ' raw' ) : '' )">
+<<<<<<< HEAD
                             <span class="amount-integer">{{ accounts[addressBook.account]?.balance | rai: 'mbanano,true' | amountsplit: 0 }}</span>
                             <span class="amount-fractional">{{ accounts[addressBook.account]?.balance | rai: 'mbanano,true' | amountsplit: 1 }}</span>
                             <span class="currency-name">XNO</span>
@@ -114,6 +125,15 @@
                           <div *ngIf="accounts[addressBook.account]?.pending.gt(0)" class="incoming-label">
                             <div class="text-snippet">New</div>
                             <div class="text-full">+{{ accounts[addressBook.account]?.pending | rai: 'mbanano,true' | amountsplit: 0 }}{{ accounts[addressBook.account]?.pending | rai: 'mbanano,true' | amountsplit: 1 }} XNO</div>
+=======
+                            <span class="amount-integer">{{ accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 0 }}</span>
+                            <span class="amount-fractional">{{ accounts[addressBook.account]?.balance | rai: 'mnano,true' | amountsplit: 1 }}</span>
+                            <span class="currency-name">BAN</span>
+                          </span>
+                          <div *ngIf="accounts[addressBook.account]?.pending.gt(0)" class="incoming-label">
+                            <div class="text-snippet">New</div>
+                            <div class="text-full">+{{ accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 0 }}{{ accounts[addressBook.account]?.pending | rai: 'mnano,true' | amountsplit: 1 }} BAN</div>
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
                           </div>
                         </div>
                         <div class="account-amounts-converted uk-width-1-1 text-half-muted">

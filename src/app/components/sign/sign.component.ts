@@ -369,7 +369,11 @@ export class SignComponent implements OnInit {
     switch (this.signTypeSelected) {
       // wallet
       case this.signTypes[0]:
+<<<<<<< HEAD
         this.walletAccount = this.accounts.find(a => a.id.replace('ban_', 'ban_') === this.signatureAccount);
+=======
+        this.walletAccount = this.accounts.find(a => a.id.replace('xrb_', 'ban_') === this.signatureAccount);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         if (!this.walletAccount) {
           this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
         } else {
@@ -436,9 +440,15 @@ export class SignComponent implements OnInit {
     }
 
     if (this.txType === TxType.send || this.txType === TxType.change) {
+<<<<<<< HEAD
       this.signatureAccount = this.fromAccountID.replace('ban_', 'ban_').toLowerCase();
     } else if (this.txType === TxType.receive || this.txType === TxType.open) {
       this.signatureAccount = this.toAccountID.replace('ban_', 'ban_').toLowerCase();
+=======
+      this.signatureAccount = this.fromAccountID.replace('xrb_', 'ban_').toLowerCase();
+    } else if (this.txType === TxType.receive || this.txType === TxType.open) {
+      this.signatureAccount = this.toAccountID.replace('xrb_', 'ban_').toLowerCase();
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
 
     if (this.shouldSign) {
@@ -705,7 +715,11 @@ export class SignComponent implements OnInit {
       }
     }
 
+<<<<<<< HEAD
     // banano seed
+=======
+    // nano seed
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     if (keyType === 'ban_seed' || seed !== '' || keyType === 'bip39_seed') {
       if (seed === '') { // seed from input, no mnemonic
         seed = input;
@@ -749,7 +763,11 @@ export class SignComponent implements OnInit {
   checkMasterKey(key) {
     // validate banano seed
     if (key.length === 64) {
+<<<<<<< HEAD
       if (this.util.banano.isValidSeed(key)) {
+=======
+      if (this.util.nano.isValidSeed(key)) {
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         return 'ban_seed';
       }
     }

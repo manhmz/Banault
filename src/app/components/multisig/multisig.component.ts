@@ -55,12 +55,20 @@ export class MultisigComponent implements OnInit {
       this.notificationService.sendWarning('Invalid banano address!', {identifier: 'account-invalid'});
       return;
     }
+<<<<<<< HEAD
     if (this.storedAccounts.includes(this.accountAdd.replace('ban_', 'ban_').toLocaleLowerCase())) {
+=======
+    if (this.storedAccounts.includes(this.accountAdd.replace('xrb_', 'ban_').toLocaleLowerCase())) {
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       this.notificationService.removeNotification('account-added');
       this.notificationService.sendWarning('Account already added!', {identifier: 'account-added'});
       return;
     }
+<<<<<<< HEAD
     this.storedAccounts.push(this.accountAdd.replace('ban_', 'ban_').toLocaleLowerCase());
+=======
+    this.storedAccounts.push(this.accountAdd.replace('xrb_', 'ban_').toLocaleLowerCase());
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     this.accountAdd = '';
     this.accountAddStatus = null;
     this.showAddBox = false;

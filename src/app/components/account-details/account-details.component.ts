@@ -81,9 +81,15 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
   showAddressBook = false;
   addressBookMatch = '';
   amounts = [
+<<<<<<< HEAD
     { name: 'XNO', shortName: 'XNO', value: 'mbanano' },
     { name: 'kbanano', shortName: 'kbanano', value: 'kbanano' },
     { name: 'banano', shortName: 'banano', value: 'banano' },
+=======
+    { name: 'BAN', shortName: 'BAN', value: 'mnano' },
+    { name: 'knano', shortName: 'knano', value: 'knano' },
+    { name: 'ban', shortName: 'ban', value: 'ban' },
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   ];
   selectedAmount = this.amounts[0];
 
@@ -924,18 +930,30 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
     switch (this.selectedAmount.value) {
       default:
+<<<<<<< HEAD
       case 'banano': return this.util.banano.bananoToRaw(value);
       case 'kbanano': return this.util.banano.kbananoToRaw(value);
       case 'mbanano': return this.util.banano.mbananoToRaw(value);
+=======
+      case 'ban': return this.util.nano.nanoToRaw(value);
+      case 'knano': return this.util.nano.knanoToRaw(value);
+      case 'mnano': return this.util.nano.mnanoToRaw(value);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
+<<<<<<< HEAD
       case 'banano': return this.util.banano.rawToBanano(value);
       case 'kbanano': return this.util.banano.rawToKbanano(value);
       case 'mbanano': return this.util.banano.rawToMbanano(value);
+=======
+      case 'ban': return this.util.nano.rawToNano(value);
+      case 'knano': return this.util.nano.rawToKnano(value);
+      case 'mnano': return this.util.nano.rawToMnano(value);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
   }
 
@@ -992,9 +1010,8 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
 
   async generateSend() {
     const isValid = this.util.account.isValidAccount(this.toAccountID);
-    if (!isValid) return this.notifications.sendWarning(`To account address is not valid`);
     if (!this.accountID || !this.toAccountID) return this.notifications.sendWarning(`From and to account are required`);
-    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid XNO Amount`);
+    if (!this.validateAmount()) return this.notifications.sendWarning(`Invalid BAN Amount`);
 
     this.qrCodeImageBlock = null;
 
@@ -1014,7 +1031,7 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const bananoAmount = this.rawAmount.div(this.banano);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) return this.notifications.sendWarning(`Amount is invalid`);
-    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough XNO`);
+    if (from.balanceBN.minus(rawAmount).lessThan(0)) return this.notifications.sendError(`From account does not have enough BAN`);
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
     this.amountRaw = this.rawAmount.mod(this.banano);
@@ -1028,7 +1045,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const defaultRepresentative = this.settings.settings.defaultRepresentative || this.bananoBlock.getRandomRepresentative();
     const representative = from.representative || defaultRepresentative;
     const blockData = {
+<<<<<<< HEAD
       account: this.accountID.replace('ban_', 'ban_').toLowerCase(),
+=======
+      account: this.accountID.replace('xrb_', 'ban_').toLowerCase(),
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       previous: from.frontier,
       representative: representative,
       balance: remainingDecimal,
@@ -1049,7 +1070,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents);
     const blockDataPrevious = {
+<<<<<<< HEAD
       account: jsonBlock.account.replace('ban_', 'ban_').toLowerCase(),
+=======
+      account: jsonBlock.account.replace('xrb_', 'ban_').toLowerCase(),
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,
@@ -1086,7 +1111,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const newBalanceDecimal = newBalance.toString(10);
 
     const blockData = {
+<<<<<<< HEAD
       account: this.accountID.replace('ban_', 'ban_').toLowerCase(),
+=======
+      account: this.accountID.replace('xrb_', 'ban_').toLowerCase(),
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       previous: previousBlock,
       representative: representative,
       balance: newBalanceDecimal,
@@ -1110,7 +1139,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
       if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
       const jsonBlock = JSON.parse(previousBlockInfo.contents);
       blockDataPrevious = {
+<<<<<<< HEAD
         account: jsonBlock.account.replace('ban_', 'ban_').toLowerCase(),
+=======
+        account: jsonBlock.account.replace('xrb_', 'ban_').toLowerCase(),
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         previous: jsonBlock.previous,
         representative: jsonBlock.representative,
         balance: jsonBlock.balance,
@@ -1151,7 +1184,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     const balance = new BigNumber(account.balance);
     const balanceDecimal = balance.toString(10);
     const blockData = {
+<<<<<<< HEAD
       account: this.accountID.replace('ban_', 'ban_').toLowerCase(),
+=======
+      account: this.accountID.replace('xrb_', 'ban_').toLowerCase(),
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       previous: account.frontier,
       representative: this.representativeModel,
       balance: balanceDecimal,
@@ -1174,7 +1211,11 @@ export class AccountDetailsComponent implements OnInit, OnDestroy {
     if (!('contents' in previousBlockInfo)) return this.notifications.sendError(`Previous block not found`);
     const jsonBlock = JSON.parse(previousBlockInfo.contents);
     const blockDataPrevious = {
+<<<<<<< HEAD
       account: jsonBlock.account.replace('ban_', 'ban_').toLowerCase(),
+=======
+      account: jsonBlock.account.replace('xrb_', 'ban_').toLowerCase(),
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       previous: jsonBlock.previous,
       representative: jsonBlock.representative,
       balance: jsonBlock.balance,

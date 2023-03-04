@@ -199,17 +199,17 @@ export class WalletService {
           if (transaction.block.subtype === 'send') {
             // Incoming transaction
             if (this.addressBook.getTransactionTrackingById(addressLink)) {
-              this.notifications.sendInfo(`Tracked address ${accountHrefLink} can now receive ${trackedAmount} XNO`, { length: 10000 });
+              this.notifications.sendInfo(`Tracked address ${accountHrefLink} can now receive ${trackedAmount} BAN`, { length: 10000 });
               console.log(`Tracked incoming block to: ${address} - Ӿ${trackedAmount}`);
             }
             // Outgoing transaction
             if (this.addressBook.getTransactionTrackingById(address)) {
-              this.notifications.sendInfo(`Tracked address ${accountHref} sent ${trackedAmount} XNO`, { length: 10000 });
+              this.notifications.sendInfo(`Tracked address ${accountHref} sent ${trackedAmount} BAN`, { length: 10000 });
               console.log(`Tracked send block from: ${address} - Ӿ${trackedAmount}`);
             }
           } else if (transaction.block.subtype === 'receive' && this.addressBook.getTransactionTrackingById(address)) {
             // Receive transaction
-            this.notifications.sendInfo(`Tracked address ${accountHref} received incoming ${trackedAmount} XNO`, { length: 10000 });
+            this.notifications.sendInfo(`Tracked address ${accountHref} received incoming ${trackedAmount} BAN`, { length: 10000 });
             console.log(`Tracked receive block to: ${address} - Ӿ${trackedAmount}`);
           } else if (transaction.block.subtype === 'change' && this.addressBook.getTransactionTrackingById(address)) {
             // Change transaction
@@ -294,8 +294,13 @@ export class WalletService {
 
     if (walletJson.accounts) {
       const newAccounts = walletJson.accounts.map(account => {
+<<<<<<< HEAD
         if (account.id.indexOf('ban_') !== -1) {
           account.id = account.id.replace('ban_', 'ban_');
+=======
+        if (account.id.indexOf('xrb_') !== -1) {
+          account.id = account.id.replace('xrb_', 'ban_');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         }
         return account;
       });
@@ -492,7 +497,11 @@ export class WalletService {
 
         } else if (this.wallet.type === 'ledger') {
           const account: any = await this.ledgerService.getLedgerAccount(index);
+<<<<<<< HEAD
           accountAddress = account.address.replace('ban_', 'ban_');
+=======
+          accountAddress = account.address.replace('xrb_', 'ban_');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
           accountPublicKey = account.publicKey.toUpperCase();
 
         } else {
@@ -570,8 +579,13 @@ export class WalletService {
     const account: any = await this.ledgerService.getLedgerAccount(index);
 
     const accountID = account.address;
+<<<<<<< HEAD
     const bananoAccountID = accountID.replace('ban_', 'ban_');
     const addressBookName = this.addressBook.getAccountName(bananoAccountID);
+=======
+    const nanoAccountID = accountID.replace('xrb_', 'ban_');
+    const addressBookName = this.addressBook.getAccountName(nanoAccountID);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
     const newAccount: WalletAccount = {
       id: bananoAccountID,
@@ -1020,7 +1034,7 @@ export class WalletService {
 
       const receiveAmount = this.util.banano.rawToMbanano(nextBlock.amount);
       this.notifications.removeNotification('success-receive');
-      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : this.noZerosPipe.transform(receiveAmount.toFixed(6)) } XNO!`, { identifier: 'success-receive' });
+      this.notifications.sendSuccess(`Successfully received ${receiveAmount.isZero() ? '' : this.noZerosPipe.transform(receiveAmount.toFixed(6)) } BAN!`, { identifier: 'success-receive' });
 
       // remove after processing
       // list also updated with reloadBalances but not if called too fast

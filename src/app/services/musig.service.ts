@@ -140,8 +140,13 @@ export class MusigService {
     const pubkeys = [];
     for (let address of addresses) {
       address = address.trim();
+<<<<<<< HEAD
       if (!address.startsWith('ban_') && !address.startsWith('ban_')) {
         throw new Error('Banano addresses must start with ban_ or ban_');
+=======
+      if (!address.startsWith('xrb_') && !address.startsWith('ban_')) {
+        throw new Error('Nano addresses must start with xrb_ or ban_');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       }
       address = address.split('_', 2)[1];
       try {

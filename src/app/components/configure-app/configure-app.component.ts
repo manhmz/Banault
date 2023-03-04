@@ -47,9 +47,15 @@ export class ConfigureAppComponent implements OnInit {
   selectedLanguage = this.languages[0].id;
 
   denominations = [
+<<<<<<< HEAD
     { name: 'XNO', value: 'mbanano' },
     { name: 'kbanano', value: 'kbanano' },
     { name: 'banano', value: 'banano' },
+=======
+    { name: 'BAN', value: 'mnano' },
+    { name: 'knano', value: 'knano' },
+    { name: 'ban', value: 'ban' },
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   ];
   selectedDenomination = this.denominations[0].value;
 
@@ -149,8 +155,13 @@ export class ConfigureAppComponent implements OnInit {
   selectedPendingOption = this.pendingOptions[0].value;
 
   // prefixOptions = [
+<<<<<<< HEAD
   //   { name: 'ban_', value: 'xrb' },
   //   { name: 'ban_', value: 'banano' },
+=======
+  //   { name: 'xrb_', value: 'xrb' },
+  //   { name: 'ban_', value: 'ban' },
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   // ];
   // selectedPrefix = this.prefixOptions[0].value;
 

@@ -34,9 +34,15 @@ export class SendComponent implements OnInit {
   addressBookMatch = '';
 
   amounts = [
+<<<<<<< HEAD
     { name: 'XNO', shortName: 'XNO', value: 'mbanano' },
     { name: 'kbanano', shortName: 'kbanano', value: 'kbanano' },
     { name: 'banano', shortName: 'banano', value: 'banano' },
+=======
+    { name: 'BAN', shortName: 'BAN', value: 'mnano' },
+    { name: 'knano', shortName: 'knano', value: 'knano' },
+    { name: 'ban', shortName: 'ban', value: 'ban' },
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   ];
   selectedAmount = this.amounts[0];
 
@@ -292,14 +298,11 @@ export class SendComponent implements OnInit {
   async sendTransaction() {
     const destinationID = this.getDestinationID();
     const isValid = this.util.account.isValidAccount(destinationID);
-    if (!isValid) {
-      return this.notificationService.sendWarning(`To account address is not valid`);
-    }
     if (!this.fromAccountID || !destinationID) {
       return this.notificationService.sendWarning(`From and to account are required`);
     }
     if (!this.validateAmount()) {
-      return this.notificationService.sendWarning(`Invalid XNO amount`);
+      return this.notificationService.sendWarning(`Invalid BAN amount`);
     }
 
     this.preparingTransaction = true;
@@ -328,7 +331,7 @@ export class SendComponent implements OnInit {
       return this.notificationService.sendWarning(`Amount is invalid`);
     }
     if (from.balanceBN.minus(rawAmount).lessThan(0)) {
-      return this.notificationService.sendError(`From account does not have enough XNO`);
+      return this.notificationService.sendError(`From account does not have enough BAN`);
     }
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
@@ -424,18 +427,30 @@ export class SendComponent implements OnInit {
 
     switch (this.selectedAmount.value) {
       default:
+<<<<<<< HEAD
       case 'banano': return this.util.banano.bananoToRaw(value);
       case 'kbanano': return this.util.banano.kbananoToRaw(value);
       case 'mbanano': return this.util.banano.mbananoToRaw(value);
+=======
+      case 'ban': return this.util.nano.nanoToRaw(value);
+      case 'knano': return this.util.nano.knanoToRaw(value);
+      case 'mnano': return this.util.nano.mnanoToRaw(value);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
+<<<<<<< HEAD
       case 'banano': return this.util.banano.rawToBanano(value);
       case 'kbanano': return this.util.banano.rawToKbanano(value);
       case 'mbanano': return this.util.banano.rawToMbanano(value);
+=======
+      case 'ban': return this.util.nano.rawToNano(value);
+      case 'knano': return this.util.nano.rawToKnano(value);
+      case 'mnano': return this.util.nano.rawToMnano(value);
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
   }
 

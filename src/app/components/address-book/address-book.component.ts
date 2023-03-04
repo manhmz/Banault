@@ -281,8 +281,13 @@ export class AddressBookComponent implements OnInit, AfterViewInit, OnDestroy {
       return this.notificationService.sendError(this.translocoService.translate('address-book.this-name-is-reserved-for-wallet-accounts-without-a-label'));
     }
 
+<<<<<<< HEAD
     // Remove spaces and convert to banano prefix
     this.newAddressAccount = this.newAddressAccount.replace(/ /g, '').replace('ban_', 'ban_');
+=======
+    // Remove spaces and convert to nano prefix
+    this.newAddressAccount = this.newAddressAccount.replace(/ /g, '').replace('xrb_', 'ban_');
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
     // If the name has been changed, make sure no other entries are using that name
     if ( (this.newAddressName !== this.previousAddressName) && this.addressBookService.nameExists(this.newAddressName) ) {

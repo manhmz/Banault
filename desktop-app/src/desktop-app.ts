@@ -13,7 +13,11 @@ const log = require('electron-log');
 let showUpdateErrors = false;
 let saveTimeout = null;
 let isDownloading = false;
+<<<<<<< HEAD
 const ban_schemes = ['banano', 'bananorep', 'bananoseed', 'bananokey', 'bananosign', 'bananoprocess'];
+=======
+const ban_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
+>>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
 /**
  * By default, the logger writes logs to the following locations:

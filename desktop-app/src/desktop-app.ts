@@ -355,15 +355,15 @@ function getApplicationMenu() {
         {type: 'separator'},
         {
           label: 'View GitHub',
-          click () { loadExternal('https://github.com/manhmz/Banault'); }
+          click () { loadExternal('https://github.com/manhtruongwang/Banault'); }
         },
         {
           label: 'Submit a bug report',
-          click () { loadExternal('https://github.com/manhmz/Banault/issues/new'); }
+          click () { loadExternal('https://github.com/manhtruongwang/Banault/issues/new'); }
         },
         {
           label: 'Release notes',
-          click () { loadExternal('https://github.com/manhmz/Banault/releases'); }
+          click () { loadExternal('https://github.com/manhtruongwang/Banault/releases'); }
         },
         {type: 'separator'},
         {

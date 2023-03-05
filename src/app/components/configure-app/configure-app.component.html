@@ -181,12 +181,12 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label">{{ 'configure-app.min-receive-amount' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.minimum-banano-amount-to-receive-transactions-below-this')"></span></label>
+                <label class="uk-form-label">{{ 'configure-app.min-receive-amount' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.minimum-nano-amount-to-receive-transactions-below-this')"></span></label>
                 <div class="uk-form-controls">
                   <div uk-grid>
                     <div class="uk-width-1-1">
                       <div class="uk-inline uk-width-1-1">
-                        <label class="uk-form-icon uk-link-reset uk-link-muted xno-symbol" for="form-horizontal-amount"></label>
+                        <label class="uk-form-icon uk-link-reset uk-link-muted BAN-symbol" for="form-horizontal-amount"></label>
                         <input [(ngModel)]="minimumReceive" class="uk-input" style="padding-left: 52px !important;" id="form-horizontal-text4" type="text" [placeholder]="t('configure-app.leave-blank-to-accept-transactions-of-any-amount')">
                       </div>
 
@@ -253,7 +253,7 @@
             <div class="uk-form-horizontal">
 
               <div class="uk-margin">
-                <label class="uk-form-label" for="form-horizontal-select">{{ 'configure-app.server-configuration' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.change-which-server-is-used-to-communicate-with-the-banano')"></span></label>
+                <label class="uk-form-label" for="form-horizontal-select">{{ 'configure-app.server-configuration' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.change-which-server-is-used-to-communicate-with-the-nano')"></span></label>
                 <div class="uk-form-controls">
                   <select class="uk-select" [(ngModel)]="selectedServer" (change)="serverConfigChange(selectedServer)" id="form-horizontal-select">
                     <option *ngFor="let server of serverOptions" [value]="server.value">{{ server.name }}</option>
@@ -267,7 +267,7 @@
           <div class="uk-width-1-1" *ngIf="showServerValues()">
             <div class="uk-form-horizontal">
               <div class="">
-                <label class="uk-form-label uk-text-right">{{ 'configure-app.api-server' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.this-server-is-used-for-rpc-communication-with-the-banano-node')"></span></label>
+                <label class="uk-form-label uk-text-right">{{ 'configure-app.api-server' | transloco }} <span uk-icon="icon: info;" uk-tooltip [title]="t('configure-app.this-server-is-used-for-rpc-communication-with-the-nano-node')"></span></label>
                 <div class="uk-form-controls">
 
                   <div class="uk-inline uk-width-1-1" *ngIf="!showServerConfigs()">
@@ -276,7 +276,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverAPI" class="uk-input uk-margin-small-bottom" type="text" placeholder="https://domain.com/path">
                     <span class="uk-text-meta">
-                      {{ 'configure-app.this-has-to-be-a-valid-rpc.1' | transloco }} <a href="https://docs.banano.org/commands/rpc-protocol/" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-rpc.2-link-rpc' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-rpc.3' | transloco }}
+                      {{ 'configure-app.this-has-to-be-a-valid-rpc.1' | transloco }} <a href="https://docs.nano.org/commands/rpc-protocol/" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-rpc.2-link-rpc' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-rpc.3' | transloco }}
                     </span>
                   </div>
                 </div>
@@ -296,7 +296,7 @@
                   <div class="uk-inline uk-width-1-1" *ngIf="showServerConfigs()">
                     <input [(ngModel)]="serverWS" class="uk-input uk-margin-small-bottom" id="form-horizontal-text2" type="text" placeholder="wss://domain.com/path">
                     <span class="uk-text-meta">
-                      {{ 'configure-app.this-has-to-be-a-valid-websocket.1' | transloco }} <a href="https://docs.banano.org/integration-guides/websockets/#configuration" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-websocket.2-link-websocket' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-websocket.3' | transloco }}<br>
+                      {{ 'configure-app.this-has-to-be-a-valid-websocket.1' | transloco }} <a href="https://docs.nano.org/integration-guides/websockets/#configuration" target="_blank" rel="noopener noreferrer">{{ 'configure-app.this-has-to-be-a-valid-websocket.2-link-websocket' | transloco }}</a> {{ 'configure-app.this-has-to-be-a-valid-websocket.3' | transloco }}<br>
                       <i>{{ 'configure-app.note-since-this-server-only-notifies-about-new-transactions' | transloco }}</i>
                     </span>
                   </div>

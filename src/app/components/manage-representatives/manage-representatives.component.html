@@ -51,11 +51,11 @@
                 <div class="uk-width-expand uk-text-truncate uk-visible-toggle">
                   <div uk-grid>
                     <div class="uk-width-expand uk-text-truncate">
-                      <a [routerLink]="'/account/' + representative.id" class="banano-address-clickable banano-address-monospace uk-display-block" title="View Account Details" uk-tooltip>
-                        <app-banano-account-id [accountID]="representative.id"></app-banano-account-id>
+                      <a [routerLink]="'/account/' + representative.id" class="nano-address-clickable nano-address-monospace uk-display-block" title="View Account Details" uk-tooltip>
+                        <app-nano-account-id [accountID]="representative.id"></app-nano-account-id>
                       </a>
                     </div>
-                    <ul class="banano-address-actions uk-iconnav">
+                    <ul class="nano-address-actions uk-iconnav">
                       <li><a ngxClipboard [cbContent]="representative.id" (cbOnSuccess)="copied()" uk-icon="icon: copy" title="Copy Account Address" uk-tooltip></a></li>
                     </ul>
                   </div>
@@ -116,8 +116,8 @@
             </div>
           </div>
           <div class="uk-card-footer uk-text-right@s nlt-button-group">
-            <button class="uk-button uk-button-danger uk-width-1-1@s uk-width-auto@m" (click)="cancelNewRep()">Cancel</button>
-            <button class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m" (click)="saveNewRepresentative()">Save</button>
+            <button class="uk-button uk-button-danger" (click)="cancelNewRep()">Cancel</button>
+            <button class="uk-button uk-button-primary" (click)="saveNewRepresentative()">Save</button>
           </div>
         </div>
       </div>

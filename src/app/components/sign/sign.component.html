@@ -1,7 +1,7 @@
 <div uk-grid>
   <div class="uk-width-1-1">
-    <h2 *ngIf="shouldSign">Sign Banano Block</h2>
-    <h2 *ngIf="!shouldSign">Process Banano Block</h2>
+    <h2 *ngIf="shouldSign">Sign Nano Block</h2>
+    <h2 *ngIf="!shouldSign">Process Nano Block</h2>
 
     <!-- Confirmation Panel -->
     <div uk-grid *ngIf="activePanel == 'confirm'" class="uk-animation-slide-left">
@@ -18,15 +18,9 @@
 
             <div *ngIf="txType != txTypes.change">
               <div class="block-amount-primary" [class.uk-text-danger]="txType == txTypes.send" [class.uk-text-success]="txType == txTypes.receive">
-<<<<<<< HEAD
-                <span class="amount-integer">{{ rawAmount | rai: 'mbanano,true' | amountsplit: 0 }}</span>
-                <span class="amount-fractional">{{ rawAmount | rai: 'mbanano,true' | amountsplit: 1 }}</span>
-                <span class="currency-name">XNO</span>
-=======
                 <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
                 <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
                 <span class="currency-name">BAN</span>
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
               </div>
               <div style="margin: 8px 0 -1px 0;" class="text-half-muted" *ngIf="settings.settings.displayCurrency && amountFiat !== null">{{ amountFiat | fiat: settings.settings.displayCurrency }}</div>
               <div style="margin: 1px 0 -1px 0;" class="uk-text-muted" *ngIf="settings.settings.displayCurrency && amountFiat !== null">{{ price.price.lastPrice | fiat: settings.settings.displayCurrency }} / BAN</div>
@@ -43,10 +37,10 @@
                 <div class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + fromAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
                     <div class="identicon-address-book-row">
-                      <app-banano-identicon scale="12" [accountID]="fromAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="banano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-banano-identicon>
+                      <app-nano-identicon scale="12" [accountID]="fromAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                       <div class="account-label uk-text-truncate" *ngIf="fromAddressBook">{{ fromAddressBook }}</div>
                     </div>
-                    <div class="banano-address-clickable banano-address-monospace uk-text-truncate"><app-banano-account-id [accountID]="fromAccountID"></app-banano-account-id></div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="fromAccountID"></app-nano-account-id></div>
                   </a>
                   <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
                     <ul class="uk-iconnav">
@@ -61,15 +55,9 @@
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Balance</div>
                     <span class="block-balance">
                       <span class="balance-amount-primary">
-<<<<<<< HEAD
-                        <span class="amount-integer">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mbanano,true' | amountsplit: 0) : 'N/A' }}</span>
-                        <span class="amount-fractional">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mbanano,true' | amountsplit: 1) : '' }}</span>
-                        <span class="currency-name">{{ fromAccountBalance ? 'XNO' : '' }}</span>
-=======
                         <span class="amount-integer">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano,true' | amountsplit: 0) : 'N/A' }}</span>
                         <span class="amount-fractional">{{ fromAccountBalance ? (fromAccountBalance | rai: 'mnano,true' | amountsplit: 1) : '' }}</span>
                         <span class="currency-name">{{ fromAccountBalance ? 'BAN' : '' }}</span>
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
                       </span>
                     </span>
                   </div>
@@ -78,15 +66,9 @@
                     <span class="block-balance">
                       <span class="balance-amount-primary uk-text-danger">
                         <span class="amount-sign">-</span>
-<<<<<<< HEAD
-                        <span class="amount-integer">{{ rawAmount | rai: 'mbanano,true' | amountsplit: 0 }}</span>
-                        <span class="amount-fractional">{{ rawAmount | rai: 'mbanano,true' | amountsplit: 1 }}</span>
-                        <span class="currency-name">XNO</span>
-=======
                         <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
                         <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
                         <span class="currency-name">BAN</span>
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
                       </span>
                     </span>
                   </div>
@@ -103,10 +85,10 @@
                 <div *ngIf="txType !== txTypes.change" class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + toAccountID" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
                     <div class="identicon-address-book-row">
-                      <app-banano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="banano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-banano-identicon>
+                      <app-nano-identicon scale="12" [accountID]="toAccountID" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                       <div class="account-label uk-text-truncate" *ngIf="toAddressBook">{{ toAddressBook }}</div>
                     </div>
-                    <div class="banano-address-clickable banano-address-monospace uk-text-truncate"><app-banano-account-id [accountID]="toAccountID"></app-banano-account-id></div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="toAccountID"></app-nano-account-id></div>
                   </a>
                   <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
                     <ul class="uk-iconnav">
@@ -117,10 +99,10 @@
                 <div *ngIf="txType === txTypes.change" class="uk-flex uk-flex-nowrap uk-width-auto uk-text-truncate" style="max-width: calc(100% - 35px);">
                   <a [routerLink]="'/account/' + currentBlock.representative" class="uk-link-reset account-container uk-text-truncate" uk-tooltip title="View Account Details">
                     <div class="identicon-address-book-row">
-                      <app-banano-identicon scale="12" [accountID]="currentBlock.representative" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="banano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-banano-identicon>
+                      <app-nano-identicon scale="12" [accountID]="currentBlock.representative" [settingIdenticonsStyle]="settings.settings.identiconsStyle" class="nano-identicon" *ngIf="(settings.settings.identiconsStyle !== 'none')"></app-nano-identicon>
                       <div class="account-label uk-text-truncate" *ngIf="repAddressBook">{{ repAddressBook }}</div>
                     </div>
-                    <div class="banano-address-clickable banano-address-monospace uk-text-truncate"><app-banano-account-id [accountID]="currentBlock.representative"></app-banano-account-id></div>
+                    <div class="nano-address-clickable nano-address-monospace uk-text-truncate"><app-nano-account-id [accountID]="currentBlock.representative"></app-nano-account-id></div>
                   </a>
                   <div class="snippet-address-actions uk-width-auto uk-flex uk-flex-bottom">
                     <ul class="uk-iconnav">
@@ -135,15 +117,9 @@
                     <div class="uk-text-small text-half-muted" style="height: 25px;">Balance</div>
                     <span class="block-balance">
                       <span class="balance-amount-primary">
-<<<<<<< HEAD
-                        <span class="amount-integer">{{ toAccountBalance && txType === txTypes.receive ? (toAccountBalance | rai: 'mbanano,true' | amountsplit: 0) : 'N/A' }}</span>
-                        <span class="amount-fractional">{{ toAccountBalance && txType === txTypes.receive ? (toAccountBalance | rai: 'mbanano,true' | amountsplit: 1) : '' }}</span>
-                        <span class="currency-name">{{ toAccountBalance && txType === txTypes.receive ? 'XNO' : '' }}</span>
-=======
                         <span class="amount-integer">{{ toAccountBalance && txType === txTypes.receive ? (toAccountBalance | rai: 'mnano,true' | amountsplit: 0) : 'N/A' }}</span>
                         <span class="amount-fractional">{{ toAccountBalance && txType === txTypes.receive ? (toAccountBalance | rai: 'mnano,true' | amountsplit: 1) : '' }}</span>
                         <span class="currency-name">{{ toAccountBalance && txType === txTypes.receive ? 'BAN' : '' }}</span>
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
                       </span>
                     </span>
                   </div>
@@ -152,15 +128,9 @@
                     <span class="block-balance">
                       <span class="balance-amount-primary uk-text-success">
                         <span class="amount-sign">+</span>
-<<<<<<< HEAD
-                        <span class="amount-integer">{{ rawAmount | rai: 'mbanano,true' | amountsplit: 0 }}</span>
-                        <span class="amount-fractional">{{ rawAmount | rai: 'mbanano,true' | amountsplit: 1 }}</span>
-                        <span class="currency-name">XNO</span>
-=======
                         <span class="amount-integer">{{ rawAmount | rai: 'mnano,true' | amountsplit: 0 }}</span>
                         <span class="amount-fractional">{{ rawAmount | rai: 'mnano,true' | amountsplit: 1 }}</span>
                         <span class="currency-name">BAN</span>
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
                       </span>
                     </span>
                   </div>
@@ -364,13 +334,15 @@
           <a *ngIf="processedHash" [routerLink]="'/account/' + signatureAccount" [queryParams]="{ sign: 1 }" class="uk-button uk-button-primary uk-width-auto" title="Account detail view" uk-tooltip>Account Detail View</a>
         </div>
 
-        <div *ngIf="!processedHash">
-          <div class="nlt-button-group uk-width-1-1 uk-text-right">
-            <button class="uk-button uk-button-danger uk-width-1-1@s uk-width-auto@m" (click)="cancel()">Cancel</button>
-            <button *ngIf="!confirmingTransaction && shouldSign && signTypeSelected !== signTypes[3]" class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m" (click)="confirmTransaction()">Confirm & Sign</button>
-            <button *ngIf="!confirmingTransaction && shouldSign && signTypeSelected === signTypes[3]" class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m" (click)="startMultisig()" [disabled]="!this.validPrivkey || !this.validParticipants || finalSignature || (this.activeStep > 1 && !this.isInputAddDisabled)">{{this.activeStep !== 4 ? (this.activeStep === 1 ? 'Start Multi-signing' : 'Step '+ (this.activeStep - 1) + '/3 | Next') : 'Step '+ (this.activeStep - 1) + '/3 | Final Step'}}</button>
+        <div *ngIf="!processedHash" uk-grid>
+          <div class="uk-width-1-2@s">
+            <a class="uk-button uk-button-danger uk-width-1-1" (click)="cancel()">Cancel</a>
+          </div>
+          <div class="uk-width-1-2@s">
+            <button *ngIf="!confirmingTransaction && shouldSign && signTypeSelected !== signTypes[3]" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmTransaction()">Confirm & Sign</button>
+            <button *ngIf="!confirmingTransaction && shouldSign && signTypeSelected === signTypes[3]" class="uk-button uk-button-primary uk-width-1-1" (click)="startMultisig()" [disabled]="!this.validPrivkey || !this.validParticipants || finalSignature || (this.activeStep > 1 && !this.isInputAddDisabled)">{{this.activeStep !== 4 ? (this.activeStep === 1 ? 'Start Multi-signing' : 'Step '+ (this.activeStep - 1) + '/3 | Next') : 'Step '+ (this.activeStep - 1) + '/3 | Final Step'}}</button>
             <button *ngIf="confirmingTransaction && shouldSign" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
-            <button *ngIf="!confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-width-1-1@s uk-width-auto@m" (click)="confirmBlock()">Confirm & Process</button>
+            <button *ngIf="!confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-width-1-1" (click)="confirmBlock()">Confirm & Process</button>
             <button *ngIf="confirmingTransaction && !shouldSign" class="uk-button uk-button-primary uk-disabled uk-width-1-1"><span class="uk-margin-right" uk-spinner></span> Loading</button>
           </div>
         </div>
@@ -390,7 +362,7 @@
 </div>
 
 <!-- Modal for result QR -->
-<div class="modal-position-bottom" id="signed-modal" uk-modal>
+<div id="signed-modal" uk-modal>
   <div class="uk-modal-dialog uk-modal-body modal-qr">
     <button class="uk-modal-close-default" type="button" uk-close></button>
     <div class="uk-modal-header">
@@ -418,7 +390,7 @@
 </div>
 
 <!-- Modal for output data QR -->
-<div class="modal-position-bottom" id="qr-code-modal" uk-modal>
+<div id="qr-code-modal" uk-modal>
   <div class="uk-modal-dialog uk-margin-auto-vertical">
     <button class="uk-modal-close-default" type="button" uk-close></button>
     <div class="uk-modal-body">

@@ -13,11 +13,7 @@ const log = require('electron-log');
 let showUpdateErrors = false;
 let saveTimeout = null;
 let isDownloading = false;
-<<<<<<< HEAD
-const ban_schemes = ['banano', 'bananorep', 'bananoseed', 'bananokey', 'bananosign', 'bananoprocess'];
-=======
 const ban_schemes = ['nano', 'nanorep', 'nanoseed', 'nanokey', 'nanosign', 'nanoprocess'];
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
 
 /**
  * By default, the logger writes logs to the following locations:
@@ -159,7 +155,7 @@ class AppUpdater {
 }
 new AppUpdater();
 
-// Register handler for banano: links
+// Register handler for nano: links
 if (process.platform === 'darwin') {
   ban_schemes.forEach((scheme) => app.setAsDefaultProtocolClient(scheme));
 } else {
@@ -257,7 +253,7 @@ if (!appLock) {
   app.on('second-instance', (event, argv, workingDirectory) => {
     if (mainWindow) {
 
-      // Detect on windows when the application has been loaded using a banano: link, send it to the wallet to load
+      // Detect on windows when the application has been loaded using a nano: link, send it to the wallet to load
       if (process.platform === 'win32') {
         const deeplink = findDeeplink(argv);
         if (deeplink) handleDeeplink(deeplink);
@@ -270,7 +266,7 @@ if (!appLock) {
     }
   });
 
-  // Detect on macos when the application has been loaded using a banano: link, send it to the wallet to load
+  // Detect on macos when the application has been loaded using a nano: link, send it to the wallet to load
   app.on('will-finish-launching', () => {
     app.on('open-url', (event, eventpath) => {
       if (!mainWindow) {
@@ -349,12 +345,12 @@ function getApplicationMenu() {
           click () { loadExternal('https://docs.nault.cc/'); }
         },
         {
-          label: 'Reddit (r/bananocurrency)',
-          click () { loadExternal('https://www.reddit.com/r/bananocurrency'); }
+          label: 'Reddit (r/nanocurrency)',
+          click () { loadExternal('https://www.reddit.com/r/nanocurrency'); }
         },
         {
           label: 'Discord (#nault)',
-          click () { loadExternal('https://discord.bananocenter.org/'); }
+          click () { loadExternal('https://discord.nanocenter.org/'); }
         },
         {type: 'separator'},
         {

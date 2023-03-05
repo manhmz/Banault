@@ -10,7 +10,7 @@ import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import {ActivatedRoute} from '@angular/router';
 import {PriceService} from '../../services/price.service';
-import {BananoBlockService} from '../../services/banano-block.service';
+import {NanoBlockService} from '../../services/nano-block.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import { environment } from 'environments/environment';
 import { TranslocoService } from '@ngneat/transloco';
@@ -23,7 +23,7 @@ const nacl = window['nacl'];
   styleUrls: ['./send.component.css']
 })
 export class SendComponent implements OnInit {
-  banano = 1000000000000000000000000;
+  nano = 1000000000000000000000000;
 
   activePanel = 'send';
   sendDestinationType = 'external-address';
@@ -34,15 +34,9 @@ export class SendComponent implements OnInit {
   addressBookMatch = '';
 
   amounts = [
-<<<<<<< HEAD
-    { name: 'XNO', shortName: 'XNO', value: 'mbanano' },
-    { name: 'kbanano', shortName: 'kbanano', value: 'kbanano' },
-    { name: 'banano', shortName: 'banano', value: 'banano' },
-=======
     { name: 'BAN', shortName: 'BAN', value: 'mnano' },
     { name: 'knano', shortName: 'knano', value: 'knano' },
     { name: 'ban', shortName: 'ban', value: 'ban' },
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   ];
   selectedAmount = this.amounts[0];
 
@@ -69,7 +63,7 @@ export class SendComponent implements OnInit {
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
     private nodeApi: ApiService,
-    private bananoBlock: BananoBlockService,
+    private nanoBlock: NanoBlockService,
     public price: PriceService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
@@ -122,15 +116,15 @@ export class SendComponent implements OnInit {
     if ( params && params.amount && !isNaN(params.amount) ) {
       const amountAsRaw =
         new BigNumber(
-          this.util.banano.mbananoToRaw(
+          this.util.nano.mnanoToRaw(
             new BigNumber(params.amount)
           )
         );
 
-      this.amountExtraRaw = amountAsRaw.mod(this.banano).floor();
+      this.amountExtraRaw = amountAsRaw.mod(this.nano).floor();
 
       this.amount =
-        this.util.banano.rawToMbanano(
+        this.util.nano.rawToMnano(
           amountAsRaw.minus(this.amountExtraRaw)
         ).toNumber();
 
@@ -162,7 +156,7 @@ export class SendComponent implements OnInit {
     }
   }
 
-  // An update to the Banano amount, sync the fiat value
+  // An update to the Nano amount, sync the fiat value
   syncFiatPrice() {
     if (!this.validateAmount() || Number(this.amount) === 0) {
       this.amountFiat = null;
@@ -178,24 +172,24 @@ export class SendComponent implements OnInit {
     const precision = this.settings.settings.displayCurrency === 'BTC' ? 1000000 : 100;
 
     // Determine fiat value of the amount
-    const fiatAmount = this.util.banano.rawToMbanano(rawAmount).times(this.price.price.lastPrice)
+    const fiatAmount = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice)
       .times(precision).floor().div(precision).toNumber();
 
     this.amountFiat = fiatAmount;
   }
 
-  // An update to the fiat amount, sync the banano value based on currently selected denomination
-  syncBananoPrice() {
+  // An update to the fiat amount, sync the nano value based on currently selected denomination
+  syncNanoPrice() {
     if (!this.amountFiat) {
       this.amount = '';
       return;
     }
     if (!this.util.string.isNumeric(this.amountFiat)) return;
-    const rawAmount = this.util.banano.mbananoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
-    const bananoVal = this.util.banano.rawToBanano(rawAmount).floor();
-    const bananoAmount = this.getAmountValueFromBase(this.util.banano.bananoToRaw(bananoVal));
+    const rawAmount = this.util.nano.mnanoToRaw(new BigNumber(this.amountFiat).div(this.price.price.lastPrice));
+    const nanoVal = this.util.nano.rawToNano(rawAmount).floor();
+    const nanoAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
 
-    this.amount = bananoAmount.toNumber();
+    this.amount = nanoAmount.toNumber();
   }
 
   searchAddressBook() {
@@ -265,7 +259,7 @@ export class SendComponent implements OnInit {
   }
 
   validateAmount() {
-    if (this.util.account.isValidBananoAmount(this.amount)) {
+    if (this.util.account.isValidNanoAmount(this.amount)) {
       this.amountStatus = 1;
       return true;
     } else {
@@ -325,7 +319,7 @@ export class SendComponent implements OnInit {
     const rawAmount = this.getAmountBaseValue(this.amount || 0);
     this.rawAmount = rawAmount.plus(this.amountExtraRaw);
 
-    const bananoAmount = this.rawAmount.div(this.banano);
+    const nanoAmount = this.rawAmount.div(this.nano);
 
     if (this.amount < 0 || rawAmount.lessThan(0)) {
       return this.notificationService.sendWarning(`Amount is invalid`);
@@ -335,10 +329,10 @@ export class SendComponent implements OnInit {
     }
 
     // Determine a proper raw amount to show in the UI, if a decimal was entered
-    this.amountExtraRaw = this.rawAmount.mod(this.banano);
+    this.amountExtraRaw = this.rawAmount.mod(this.nano);
 
     // Determine fiat value of the amount
-    this.amountFiat = this.util.banano.rawToMbanano(rawAmount).times(this.price.price.lastPrice).toNumber();
+    this.amountFiat = this.util.nano.rawToMnano(rawAmount).times(this.price.price.lastPrice).toNumber();
 
     this.fromAddressBook = (
         this.addressBookService.getAccountName(this.fromAccountID)
@@ -374,7 +368,7 @@ export class SendComponent implements OnInit {
     try {
       const destinationID = this.getDestinationID();
 
-      const newHash = await this.bananoBlock.generateSend(walletAccount, destinationID,
+      const newHash = await this.nanoBlock.generateSend(walletAccount, destinationID,
         this.rawAmount, this.walletService.isLedgerWallet());
 
       if (newHash) {
@@ -413,8 +407,8 @@ export class SendComponent implements OnInit {
 
     this.amountExtraRaw = walletAccount.balanceRaw;
 
-    const bananoVal = this.util.banano.rawToBanano(walletAccount.balance).floor();
-    const maxAmount = this.getAmountValueFromBase(this.util.banano.bananoToRaw(bananoVal));
+    const nanoVal = this.util.nano.rawToNano(walletAccount.balance).floor();
+    const maxAmount = this.getAmountValueFromBase(this.util.nano.nanoToRaw(nanoVal));
     this.amount = maxAmount.toNumber();
     this.syncFiatPrice();
   }
@@ -427,30 +421,18 @@ export class SendComponent implements OnInit {
 
     switch (this.selectedAmount.value) {
       default:
-<<<<<<< HEAD
-      case 'banano': return this.util.banano.bananoToRaw(value);
-      case 'kbanano': return this.util.banano.kbananoToRaw(value);
-      case 'mbanano': return this.util.banano.mbananoToRaw(value);
-=======
       case 'ban': return this.util.nano.nanoToRaw(value);
       case 'knano': return this.util.nano.knanoToRaw(value);
       case 'mnano': return this.util.nano.mnanoToRaw(value);
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
   }
 
   getAmountValueFromBase(value) {
     switch (this.selectedAmount.value) {
       default:
-<<<<<<< HEAD
-      case 'banano': return this.util.banano.rawToBanano(value);
-      case 'kbanano': return this.util.banano.rawToKbanano(value);
-      case 'mbanano': return this.util.banano.rawToMbanano(value);
-=======
       case 'ban': return this.util.nano.rawToNano(value);
       case 'knano': return this.util.nano.rawToKnano(value);
       case 'mnano': return this.util.nano.rawToMnano(value);
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
   }
 

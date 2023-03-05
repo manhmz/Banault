@@ -8,15 +8,15 @@ import {UtilService, StateBlock, TxType} from '../../services/util.service';
 import {WorkPoolService} from '../../services/work-pool.service';
 import {AppSettingsService} from '../../services/app-settings.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {BananoBlockService} from '../../services/banano-block.service';
+import {NanoBlockService} from '../../services/nano-block.service';
 import {ApiService} from '../../services/api.service';
 import {PriceService} from '../../services/price.service';
 import * as QRCode from 'qrcode';
 import * as bip39 from 'bip39';
-import * as bip39Wallet from 'bananocurrency-web';
+import * as bip39Wallet from 'nanocurrency-web';
 import { QrModalService } from '../../services/qr-modal.service';
 import hermes from 'hermes-channel';
-import * as bananocurrency from 'bananocurrency';
+import * as nanocurrency from 'nanocurrency';
 import { MusigService } from '../../services/musig.service';
 import { environment } from 'environments/environment';
 
@@ -119,7 +119,7 @@ export class SignComponent implements OnInit {
     private walletService: WalletService,
     private addressBookService: AddressBookService,
     private notificationService: NotificationService,
-    private bananoBlock: BananoBlockService,
+    private nanoBlock: NanoBlockService,
     private workPool: WorkPoolService,
     public settings: AppSettingsService,
     private api: ApiService,
@@ -249,7 +249,7 @@ export class SignComponent implements OnInit {
           return this.notificationService.sendError(`Meaningless block. The balance and representative are unchanged!`, {length: 0});
         }
 
-        this.amount = this.util.banano.rawToMbanano(this.rawAmount).toString(10);
+        this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
 
         this.prepareTransaction();
       } else if (!this.previousBlock && this.verifyBlock(this.currentBlock)) {
@@ -268,7 +268,7 @@ export class SignComponent implements OnInit {
           return this.notificationService.sendError(`Only OPEN block is currently supported when previous block is missing`, {length: 0});
         }
 
-        this.amount = this.util.banano.rawToMbanano(this.rawAmount).toString(10);
+        this.amount = this.util.nano.rawToMnano(this.rawAmount).toString(10);
         this.prepareTransaction();
       } else {
         return;
@@ -281,7 +281,7 @@ export class SignComponent implements OnInit {
     // Extract block hash (used with multisig)
     const block: StateBlock = {account: this.currentBlock.account, link: this.currentBlock.link, previous: this.currentBlock.previous,
       representative: this.currentBlock.representative, balance: this.currentBlock.balance, signature: null, work: null};
-    this.blockHash = this.util.hex.fromUint8(this.util.banano.hashStateBlock(block));
+    this.blockHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
 
     this.addressBookService.loadAddressBook();
 
@@ -330,8 +330,8 @@ export class SignComponent implements OnInit {
     if (this.util.account.isValidAccount(block.account) &&
       this.util.account.isValidAccount(block.representative) &&
       this.util.account.isValidAmount(block.balance) &&
-      this.util.banano.isValidHash(block.previous) &&
-      this.util.banano.isValidHash(block.link)) {
+      this.util.nano.isValidHash(block.previous) &&
+      this.util.nano.isValidHash(block.link)) {
       return true;
     } else {
       this.notificationService.sendError(`The provided blocks contain invalid values!`, {length: 0});
@@ -342,7 +342,7 @@ export class SignComponent implements OnInit {
   verifyBlockHash(currentBlock: StateBlock, previousBlock: StateBlock) {
     const block: StateBlock = {account: previousBlock.account, link: previousBlock.link, previous: previousBlock.previous,
       representative: previousBlock.representative, balance: previousBlock.balance, signature: null, work: null};
-    const previousHash = this.util.hex.fromUint8(this.util.banano.hashStateBlock(block));
+    const previousHash = this.util.hex.fromUint8(this.util.nano.hashStateBlock(block));
     if (!currentBlock.previous || previousHash !== currentBlock.previous) {
       this.notificationService.sendError(`The hash of the previous block does not match the frontier in the new block!`, {length: 0});
     }
@@ -369,11 +369,7 @@ export class SignComponent implements OnInit {
     switch (this.signTypeSelected) {
       // wallet
       case this.signTypes[0]:
-<<<<<<< HEAD
         this.walletAccount = this.accounts.find(a => a.id.replace('ban_', 'ban_') === this.signatureAccount);
-=======
-        this.walletAccount = this.accounts.find(a => a.id.replace('xrb_', 'ban_') === this.signatureAccount);
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         if (!this.walletAccount) {
           this.signatureMessage = 'Could not find a matching wallet account to sign with. Make sure it\'s added under your accounts';
         } else {
@@ -426,7 +422,7 @@ export class SignComponent implements OnInit {
   async prepareTransaction() {
     // Determine fiat value of the amount (if not offline mode)
     if (this.settings.settings.serverAPI) {
-      this.amountFiat = this.util.banano.rawToMbanano(this.rawAmount).times(this.price.price.lastPrice).toNumber();
+      this.amountFiat = this.util.nano.rawToMnano(this.rawAmount).times(this.price.price.lastPrice).toNumber();
     }
 
     this.fromAddressBook = this.addressBookService.getAccountName(this.fromAccountID);
@@ -440,15 +436,9 @@ export class SignComponent implements OnInit {
     }
 
     if (this.txType === TxType.send || this.txType === TxType.change) {
-<<<<<<< HEAD
       this.signatureAccount = this.fromAccountID.replace('ban_', 'ban_').toLowerCase();
     } else if (this.txType === TxType.receive || this.txType === TxType.open) {
       this.signatureAccount = this.toAccountID.replace('ban_', 'ban_').toLowerCase();
-=======
-      this.signatureAccount = this.fromAccountID.replace('xrb_', 'ban_').toLowerCase();
-    } else if (this.txType === TxType.receive || this.txType === TxType.open) {
-      this.signatureAccount = this.toAccountID.replace('xrb_', 'ban_').toLowerCase();
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     }
 
     if (this.shouldSign) {
@@ -490,7 +480,7 @@ export class SignComponent implements OnInit {
     // sign the block (if not multisig)
     let block: StateBlock;
     if (this.signTypeSelected !== this.signTypes[3]) {
-      block = await this.bananoBlock.signOfflineBlock(walletAccount, this.currentBlock,
+      block = await this.nanoBlock.signOfflineBlock(walletAccount, this.currentBlock,
         this.previousBlock, this.txType, this.shouldGenWork, this.selectedThreshold, isLedger);
       console.log('Signature: ' + block.signature || 'Error');
       console.log('Work: ' + block.work || 'Not applied');
@@ -508,7 +498,7 @@ export class SignComponent implements OnInit {
         return this.notificationService.sendError('The private keys does not match the multisig account you want to sign!', {length: 0});
       }
       // Check the given signature format
-      if (!this.util.banano.isValidSignature(signature)) {
+      if (!this.util.nano.isValidSignature(signature)) {
         return this.notificationService.sendError('The multi-signature was invalid!', {length: 0});
       }
       block.signature = signature;
@@ -551,10 +541,10 @@ export class SignComponent implements OnInit {
         this.clean(this.previousBlock);
       }
       if (this.previousBlock) {
-        this.qrString = 'bananoprocess:{"block":' + JSON.stringify(block) +
+        this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) +
         ',"previous":' + JSON.stringify(this.previousBlock) + '}';
       } else {
-        this.qrString = 'bananoprocess:{"block":' + JSON.stringify(block) + '}';
+        this.qrString = 'nanoprocess:{"block":' + JSON.stringify(block) + '}';
       }
 
       const qrCode = await QRCode.toDataURL(this.qrString, { errorCorrectionLevel: 'L', scale: 16 });
@@ -680,7 +670,7 @@ export class SignComponent implements OnInit {
     this.validIndex = true;
     if (this.util.string.isNumeric(index) && index % 1 === 0) {
       index = parseInt(index, 10);
-      if (!this.util.banano.isValidIndex(index)) {
+      if (!this.util.nano.isValidIndex(index)) {
         this.validIndex = false;
       }
       if (index > INDEX_MAX) {
@@ -707,7 +697,7 @@ export class SignComponent implements OnInit {
     // input is mnemonic
     if (keyType === 'mnemonic') {
       seed = bip39.mnemonicToEntropy(input).toUpperCase();
-      // seed must be 64 or the banano wallet can't be created.
+      // seed must be 64 or the nano wallet can't be created.
       // This is the reason 12-words can't be used because the seed would be 32 in length
       if (seed.length !== 64) {
         this.notificationService.sendWarning(`Mnemonic not 24 words`);
@@ -715,11 +705,7 @@ export class SignComponent implements OnInit {
       }
     }
 
-<<<<<<< HEAD
-    // banano seed
-=======
     // nano seed
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     if (keyType === 'ban_seed' || seed !== '' || keyType === 'bip39_seed') {
       if (seed === '') { // seed from input, no mnemonic
         seed = input;
@@ -730,7 +716,7 @@ export class SignComponent implements OnInit {
       }
       // also check using bip39/44 derivation
       let bip39Seed;
-      // take 128 char bip39 seed directly from input or convert it from a 64 char banano seed (entropy)
+      // take 128 char bip39 seed directly from input or convert it from a 64 char nano seed (entropy)
       if (keyType === 'bip39_seed') {
         bip39Seed = input;
       } else {
@@ -761,13 +747,9 @@ export class SignComponent implements OnInit {
 
   // Validate type of master key
   checkMasterKey(key) {
-    // validate banano seed
+    // validate nano seed
     if (key.length === 64) {
-<<<<<<< HEAD
-      if (this.util.banano.isValidSeed(key)) {
-=======
       if (this.util.nano.isValidSeed(key)) {
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         return 'ban_seed';
       }
     }
@@ -841,7 +823,7 @@ export class SignComponent implements OnInit {
   privkeyChangeMulti(input) {
     const privKey = this.convertPrivateKey(input);
     if (privKey !== null) {
-      if (this.util.banano.isValidHash(privKey)) {
+      if (this.util.nano.isValidHash(privKey)) {
         this.validPrivkey = true;
         this.privateKey = privKey;
         this.signatureMessage = '';
@@ -977,7 +959,7 @@ export class SignComponent implements OnInit {
 
   // generate shared data to be sent to other participants
   getMultisigLink() {
-    return 'bananosign:{"block":' + JSON.stringify(this.currentBlock) +
+    return 'nanosign:{"block":' + JSON.stringify(this.currentBlock) +
     ',"previous":' + JSON.stringify(this.previousBlock) +  ',"participants":' + this.participants + '}';
   }
 
@@ -986,11 +968,11 @@ export class SignComponent implements OnInit {
     const hashFull = hashString.substring(2);
     let valid = true;
     if (hashFull.length === 64) {
-      if (!this.util.banano.isValidHash(hashFull)) {
+      if (!this.util.nano.isValidHash(hashFull)) {
         valid = false;
       }
     } else if (hashFull.length === 128) {
-      if (!this.util.banano.isValidHash(hashFull.substring(0, 64)) || !this.util.banano.isValidHash(hashFull.substring(64, 128))) {
+      if (!this.util.nano.isValidHash(hashFull.substring(0, 64)) || !this.util.nano.isValidHash(hashFull.substring(64, 128))) {
         valid = false;
       }
     } else {
@@ -1083,7 +1065,7 @@ export class SignComponent implements OnInit {
 
   multiSign() {
     const result = this.musigService.runMultiSign(this.privateKey, this.blockHash, this.inputMultisigData);
-    // used for validation when the final banano block is created
+    // used for validation when the final nano block is created
     if (result && result.multisig !== '') {
       this.multisigAccount = result.multisig;
     }
@@ -1092,7 +1074,7 @@ export class SignComponent implements OnInit {
       console.log('Started multisig using block hash: ' + this.blockHash);
       // Combine output with public key
       const output = this.activeStep + ':' + this.util.hex.fromUint8(result.outbuf.subarray(33)) +
-        bananocurrency.derivePublicKey(this.privateKey);
+        nanocurrency.derivePublicKey(this.privateKey);
       this.activeStep = this.activeStep + 1;
       this.outputMultisigData = output.toUpperCase();
       this.generateOutputQR();

@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import {UtilService} from '../../services/util.service';
 import {AppSettingsService} from '../../services/app-settings.service';
-import * as bananocurrency from 'bananocurrency';
+import * as nanocurrency from 'nanocurrency';
 import {PriceService} from '../../services/price.service';
 import { BigNumber } from 'bignumber.js';
 import {NotificationService} from '../../services/notification.service';
@@ -12,9 +12,9 @@ import {NotificationService} from '../../services/notification.service';
   styleUrls: ['./converter.component.less']
 })
 export class ConverterComponent implements OnInit, OnDestroy {
-  Mbanano = '1';
+  Mnano = '1';
   raw = '';
-  invalidMbanano = false;
+  invalidMnano = false;
   invalidRaw = false;
   invalidFiat = false;
   fiatPrice = '0';
@@ -29,13 +29,13 @@ export class ConverterComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     BigNumber.config({ DECIMAL_PLACES: 30 });
-    this.Mbanano = '1';
+    this.Mnano = '1';
 
     this.priceSub = this.price.lastPrice$.subscribe(event => {
-      this.fiatPrice = (new BigNumber(this.Mbanano)).times(this.price.price.lastPrice).toString();
+      this.fiatPrice = (new BigNumber(this.Mnano)).times(this.price.price.lastPrice).toString();
     });
 
-    this.unitChange('mbanano');
+    this.unitChange('mnano');
   }
 
   ngOnDestroy() {
@@ -46,41 +46,41 @@ export class ConverterComponent implements OnInit, OnDestroy {
 
   unitChange(unit) {
     switch (unit) {
-      case 'mbanano':
-        if (this.util.account.isValidBananoAmount(this.Mbanano)) {
-          this.raw = bananocurrency.convert(this.Mbanano, {from: bananocurrency.Unit.NANO, to: bananocurrency.Unit.raw});
-          this.fiatPrice = (new BigNumber(this.Mbanano)).times(this.price.price.lastPrice).toString(10);
-          this.invalidMbanano = false;
+      case 'mnano':
+        if (this.util.account.isValidNanoAmount(this.Mnano)) {
+          this.raw = nanocurrency.convert(this.Mnano, {from: nanocurrency.Unit.NANO, to: nanocurrency.Unit.raw});
+          this.fiatPrice = (new BigNumber(this.Mnano)).times(this.price.price.lastPrice).toString(10);
+          this.invalidMnano = false;
           this.invalidRaw = false;
           this.invalidFiat = false;
         } else {
           this.raw = '';
           this.fiatPrice = '';
-          this.invalidMbanano = true;
+          this.invalidMnano = true;
         }
         break;
       case 'raw':
         if (this.util.account.isValidAmount(this.raw)) {
-          this.Mbanano = bananocurrency.convert(this.raw, {from: bananocurrency.Unit.raw, to: bananocurrency.Unit.NANO});
-          this.fiatPrice = (new BigNumber(this.Mbanano)).times(this.price.price.lastPrice).toString(10);
+          this.Mnano = nanocurrency.convert(this.raw, {from: nanocurrency.Unit.raw, to: nanocurrency.Unit.NANO});
+          this.fiatPrice = (new BigNumber(this.Mnano)).times(this.price.price.lastPrice).toString(10);
           this.invalidRaw = false;
-          this.invalidMbanano = false;
+          this.invalidMnano = false;
           this.invalidFiat = false;
         } else {
-          this.Mbanano = '';
+          this.Mnano = '';
           this.fiatPrice = '';
           this.invalidRaw = true;
         }
         break;
       case 'fiat':
         if (this.util.string.isNumeric(this.fiatPrice)) {
-          this.Mbanano = (new BigNumber(this.fiatPrice)).dividedBy(this.price.price.lastPrice).toString(10);
-          this.raw = bananocurrency.convert(this.Mbanano, {from: bananocurrency.Unit.NANO, to: bananocurrency.Unit.raw});
+          this.Mnano = (new BigNumber(this.fiatPrice)).dividedBy(this.price.price.lastPrice).toString(10);
+          this.raw = nanocurrency.convert(this.Mnano, {from: nanocurrency.Unit.NANO, to: nanocurrency.Unit.raw});
           this.invalidRaw = false;
-          this.invalidMbanano = false;
+          this.invalidMnano = false;
           this.invalidFiat = false;
         } else {
-          this.Mbanano = '';
+          this.Mnano = '';
           this.raw = '';
           this.invalidFiat = true;
         }

@@ -6,9 +6,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class RaiPipe implements PipeTransform {
   precision = 6;
 
-  mrai = 1000000000000000000000000000000;
-  krai = 1000000000000000000000000000;
-  rai  = 1000000000000000000000000;
+  mrai = 100000000000000000000000000000;
+  krai = 100000000000000000000000000;
+  rai  = 100000000000000000000000;
 
   transform(value: any, args?: any): any {
     const opts = args.split(',');
@@ -17,13 +17,8 @@ export class RaiPipe implements PipeTransform {
 
     switch (denomination.toLowerCase()) {
       default:
-<<<<<<< HEAD
-      case 'xrb': return `${(value / this.mrai).toFixed(6)}${!hideText ? ' XNO' : ''}`;
-      case 'mbanano':
-=======
       case 'xrb': return `${(value / this.mrai).toFixed(6)}${!hideText ? ' BAN' : ''}`;
       case 'mnano':
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
         const hasRawValue = (value / this.rai) % 1;
         if (hasRawValue) {
           // New more precise toFixed function, but bugs on huge raw numbers
@@ -32,13 +27,8 @@ export class RaiPipe implements PipeTransform {
         } else {
           return `${(value / this.mrai).toFixed(6)}${!hideText ? ' BAN' : ''}`;
         }
-<<<<<<< HEAD
-      case 'kbanano': return `${(value / this.krai).toFixed(3)}${!hideText ? ' kbanano' : ''}`;
-      case 'banano': return `${(value / this.rai).toFixed(0)}${!hideText ? ' banano' : ''}`;
-=======
       case 'knano': return `${(value / this.krai).toFixed(3)}${!hideText ? ' knano' : ''}`;
       case 'ban': return `${(value / this.rai).toFixed(0)}${!hideText ? ' nano' : ''}`;
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       case 'raw': return `${value}${!hideText ? ' raw' : ''}`;
       case 'dynamic':
         const rai = (value / this.rai);

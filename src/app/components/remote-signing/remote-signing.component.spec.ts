@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RemoteSigningComponent } from './remote-signing.component';
 
@@ -6,7 +6,7 @@ describe('RemoteSigningComponent', () => {
   let component: RemoteSigningComponent;
   let fixture: ComponentFixture<RemoteSigningComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ RemoteSigningComponent ]
     })

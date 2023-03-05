@@ -1,20 +1,20 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BananoIdenticonComponent } from './banano-identicon.component';
+import { NanoIdenticonComponent } from './nano-identicon.component';
 
-describe('BananoIdenticonComponent', () => {
-  let component: BananoIdenticonComponent;
-  let fixture: ComponentFixture<BananoIdenticonComponent>;
+describe('NanoIdenticonComponent', () => {
+  let component: NanoIdenticonComponent;
+  let fixture: ComponentFixture<NanoIdenticonComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BananoIdenticonComponent ]
+      declarations: [ NanoIdenticonComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BananoIdenticonComponent);
+    fixture = TestBed.createComponent(NanoIdenticonComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

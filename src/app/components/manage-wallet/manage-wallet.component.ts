@@ -155,27 +155,31 @@ export class ManageWalletComponent implements OnInit {
     // Check for iOS, which is weird with saving files
     const iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 
-    const elem = window.document.createElement('a');
-    const objUrl = window.URL.createObjectURL(blob);
-    if (iOS) {
-      switch (type) {
-        case 'json':
-          elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
-          break;
-        case 'csv':
-          elem.href = `data:attachment/file,${csvFile}`;
-          break;
-      }
+    if (window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveBlob(blob, fileName);
     } else {
-      elem.href = objUrl;
+      const elem = window.document.createElement('a');
+      const objUrl = window.URL.createObjectURL(blob);
+      if (iOS) {
+        switch (type) {
+          case 'json':
+            elem.href = `data:attachment/file,${JSON.stringify(exportData)}`;
+            break;
+          case 'csv':
+            elem.href = `data:attachment/file,${csvFile}`;
+            break;
+        }
+      } else {
+        elem.href = objUrl;
+      }
+      elem.download = fileName;
+      document.body.appendChild(elem);
+      elem.click();
+      setTimeout(function() {
+        document.body.removeChild(elem);
+        window.URL.revokeObjectURL(objUrl);
+      }, 200);
     }
-    elem.download = fileName;
-    document.body.appendChild(elem);
-    elem.click();
-    setTimeout(function() {
-      document.body.removeChild(elem);
-      window.URL.revokeObjectURL(objUrl);
-    }, 200);
   }
 
   async exportToFile() {
@@ -258,7 +262,7 @@ export class ManageWalletComponent implements OnInit {
     const csvData = [];
     if (history && history.history && history.history.length > 0) {
       history.history.forEach(a => {
-        csvData.push({'account': a.account, 'type': a.type, 'amount': this.util.banano.rawToMbanano(a.amount).toString(10),
+        csvData.push({'account': a.account, 'type': a.type, 'amount': this.util.nano.rawToMnano(a.amount).toString(10),
         'hash': a.hash, 'height': a.height, 'time': formatDate(a.local_timestamp * 1000, 'y-MM-d HH:mm:ss', 'en-US')});
       });
     }

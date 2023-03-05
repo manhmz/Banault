@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, ElementRef, Input, OnChanges, HostBinding, ViewChild } from '@angular/core';
-import { createIcon } from '../../../../assets/lib/bananoidenticons.min.js';
+import { createIcon } from '../../../../assets/lib/nanoidenticons.min.js';
 
 @Component({
-  selector: 'app-banano-identicon',
-  templateUrl: './banano-identicon.component.html',
-  styleUrls: ['./banano-identicon.component.css'],
+  selector: 'app-nano-identicon',
+  templateUrl: './nano-identicon.component.html',
+  styleUrls: ['./nano-identicon.component.css'],
 })
-export class BananoIdenticonComponent implements OnChanges, AfterViewInit {
+export class NanoIdenticonComponent implements OnChanges, AfterViewInit {
 
   @Input() accountID: string;
   @Input() scale: number;
@@ -20,17 +20,17 @@ export class BananoIdenticonComponent implements OnChanges, AfterViewInit {
   @ViewChild('canvasContainer') canvasContainer: ElementRef;
 
   ngOnChanges() {
-    this.renderBananoidenticon();
+    this.renderNanoidenticon();
   }
 
   ngAfterViewInit() {
-    this.renderBananoidenticon();
+    this.renderNanoidenticon();
   }
 
-  renderBananoidenticon() {
+  renderNanoidenticon() {
     if (
           (this.canvasContainer == null)
-        || (this.settingIdenticonsStyle !== 'bananoidenticons')
+        || (this.settingIdenticonsStyle !== 'nanoidenticons')
         || (this.renderedIdenticon === this.accountID)
       ) {
         return;

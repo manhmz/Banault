@@ -5,7 +5,7 @@ import * as bip39 from 'bip39';
 import {LedgerService, LedgerStatus} from '../../services/ledger.service';
 import { QrModalService } from '../../services/qr-modal.service';
 import {UtilService} from '../../services/util.service';
-import { wallet } from 'bananocurrency-web';
+import { wallet } from 'nanocurrency-web';
 import { TranslocoService } from '@ngneat/transloco';
 
 enum panels {
@@ -159,11 +159,11 @@ export class ConfigureWalletComponent implements OnInit {
 
     if (this.ledger.status === LedgerStatus.NOT_CONNECTED) {
       this.ledgerService.resetLedger();
-      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the banano app is running on the Ledger. If the error persists: Check the <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
+      return this.notifications.sendWarning(`Failed to connect the Ledger device. Make sure the nano app is running on the Ledger. If the error persists: Check the <a href="https://docs.nault.cc/2020/08/04/ledger-guide.html#troubleshooting" target="_blank" rel="noopener noreferrer">troubleshooting guide</a>`, { identifier: 'ledger-error', length: 0 });
     }
 
     if (this.ledger.status === LedgerStatus.LOCKED) {
-      return this.notifications.sendWarning(`Unlock your Ledger device and open the banano app to continue`);
+      return this.notifications.sendWarning(`Unlock your Ledger device and open the nano app to continue`);
     }
 
     if (this.ledger.status === LedgerStatus.READY) {
@@ -194,7 +194,7 @@ export class ConfigureWalletComponent implements OnInit {
       if (this.walletService.isLedgerWallet()) {
         msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>disconnect your Ledger device from Nault</b>.</span><br><br>If you need to use the Ledger wallet, simply import your device again.<br><br><b style="font-size: 18px;">Make sure you have saved the recovery phrase you got when initially setting up your Ledger device</b>.<br><br><span style="font-size: 18px;"><b>YOU WILL NOT BE ABLE TO RECOVER THE FUNDS</b><br>if you lose both the recovery phrase and access to your Ledger device.</span></p><br>';
       } else {
-        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>replace your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-banano-seed') + '</b><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></p><br>';
+        msg = '<p class="uk-alert uk-alert-danger"><br><span class="uk-flex"><span uk-icon="icon: warning; ratio: 3;" class="uk-align-center"></span></span><span style="font-size: 18px;">You are about to configure a new wallet, which will <b>replace your currently configured wallet</b>.</span><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.before-continuing-make-sure-you-have-saved-the-nano-seed') + '</b><br><br><b style="font-size: 18px;">' + this.translocoService.translate('reset-wallet.you-will-not-be-able-to-recover-the-funds-without-a-backup') + '</b></p><br>';
       }
       await UIkit.modal.confirm(msg);
       return true;
@@ -212,7 +212,7 @@ export class ConfigureWalletComponent implements OnInit {
       if (this.selectedImportOption === 'mnemonic' || this.selectedImportOption === 'seed') {
         if (this.selectedImportOption === 'seed') {
           const existingSeed = this.importSeedModel.trim();
-          if (existingSeed.length !== 64 || !this.util.banano.isValidSeed(existingSeed)) return this.notifications.sendError(`Seed is invalid, double check it!`);
+          if (existingSeed.length !== 64 || !this.util.nano.isValidSeed(existingSeed)) return this.notifications.sendError(`Seed is invalid, double check it!`);
           this.importSeed = existingSeed;
         } else if (this.selectedImportOption === 'mnemonic') {
           // Clean the value by trimming it and removing newlines
@@ -224,7 +224,7 @@ export class ConfigureWalletComponent implements OnInit {
           // Try and decode the mnemonic
           try {
             const newSeed = bip39.mnemonicToEntropy(mnemonic);
-            if (!newSeed || newSeed.length !== 64 || !this.util.banano.isValidSeed(newSeed)) return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
+            if (!newSeed || newSeed.length !== 64 || !this.util.nano.isValidSeed(newSeed)) return this.notifications.sendError(`Mnemonic is invalid, double check it!`);
             this.importSeed = newSeed.toUpperCase(); // Force uppercase, for consistency
           } catch (err) {
             return this.notifications.sendError(`Unable to decode mnemonic, double check it!`);
@@ -246,10 +246,10 @@ export class ConfigureWalletComponent implements OnInit {
         if (this.isExpanded && this.keyString.length === 128) {
           // includes deterministic R value material which we ignore
           this.keyString = this.keyString.substring(0, 64);
-          if (!this.util.banano.isValidSeed(this.keyString)) {
+          if (!this.util.nano.isValidSeed(this.keyString)) {
             return this.notifications.sendError(`Private key is invalid, double check it!`);
           }
-        } else if (this.keyString.length !== 64 || !this.util.banano.isValidSeed(this.keyString)) {
+        } else if (this.keyString.length !== 64 || !this.util.nano.isValidSeed(this.keyString)) {
           return this.notifications.sendError(`Private key is invalid, double check it!`);
         }
       } else if (this.selectedImportOption === 'bip39-mnemonic') {
@@ -424,7 +424,7 @@ export class ConfigureWalletComponent implements OnInit {
     let invalid = false;
     if (this.util.string.isNumeric(index) && index % 1 === 0) {
       index = parseInt(index, 10);
-      if (!this.util.banano.isValidIndex(index)) {
+      if (!this.util.nano.isValidIndex(index)) {
         invalid = true;
       }
       if (index > INDEX_MAX) {

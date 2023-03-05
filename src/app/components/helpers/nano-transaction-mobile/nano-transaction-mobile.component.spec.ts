@@ -1,20 +1,20 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { BananoTransactionMobileComponent } from './banano-transaction-mobile.component';
+import { NanoTransactionMobileComponent } from './nano-transaction-mobile.component';
 
-describe('BananoTransactionMobileComponent', () => {
-  let component: BananoTransactionMobileComponent;
-  let fixture: ComponentFixture<BananoTransactionMobileComponent>;
+describe('NanoTransactionMobileComponent', () => {
+  let component: NanoTransactionMobileComponent;
+  let fixture: ComponentFixture<NanoTransactionMobileComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ BananoTransactionMobileComponent ]
+      declarations: [ NanoTransactionMobileComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(BananoTransactionMobileComponent);
+    fixture = TestBed.createComponent(NanoTransactionMobileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

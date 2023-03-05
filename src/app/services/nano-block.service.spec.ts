@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { BananoBlockService } from './banano-block.service';
+import { NanoBlockService } from './nano-block.service';
 
-describe('BananoBlockService', () => {
+describe('NanoBlockService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [BananoBlockService]
+      providers: [NanoBlockService]
     });
   });
 
-  it('should be created', inject([BananoBlockService], (service: BananoBlockService) => {
+  it('should be created', inject([NanoBlockService], (service: NanoBlockService) => {
     expect(service).toBeTruthy();
   }));
 });

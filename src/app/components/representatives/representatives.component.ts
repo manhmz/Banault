@@ -8,7 +8,7 @@ import {
   ApiService,
   AppSettingsService,
   FullRepresentativeOverview,
-  BananoBlockService,
+  NanoBlockService,
   NotificationService,
   RepresentativeService,
   UtilService,
@@ -57,7 +57,7 @@ export class RepresentativesComponent implements OnInit {
     public walletService: WalletService,
     private api: ApiService,
     private notifications: NotificationService,
-    private bananoBlock: BananoBlockService,
+    private nanoBlock: NanoBlockService,
     private util: UtilService,
     private representativeService: RepresentativeService,
     public settings: AppSettingsService,
@@ -231,11 +231,11 @@ export class RepresentativesComponent implements OnInit {
       const totalSupply = new BigNumber(133248289);
 
       const reps = scores.map(rep => {
-        const bananoWeight = this.util.banano.rawToMbanano(rep.votingweight.toString() || 0);
-        const percent = bananoWeight.div(totalSupply).times(100);
+        const nanoWeight = this.util.nano.rawToMnano(rep.votingweight.toString() || 0);
+        const percent = nanoWeight.div(totalSupply).times(100);
 
-        // rep.weight = bananoWeight.toString(10);
-        rep.weight = this.util.banano.mbananoToRaw(bananoWeight);
+        // rep.weight = nanoWeight.toString(10);
+        rep.weight = this.util.nano.mnanoToRaw(nanoWeight);
         rep.percent = percent.toFixed(3);
 
         return rep;
@@ -336,7 +336,7 @@ export class RepresentativesComponent implements OnInit {
       }
 
       try {
-        const changed = await this.bananoBlock.generateChange(walletAccount, newRep, this.walletService.isLedgerWallet());
+        const changed = await this.nanoBlock.generateChange(walletAccount, newRep, this.walletService.isLedgerWallet());
         if (!changed) {
           this.notifications.sendError(`Error changing representative for ${account.id}, please try again`);
         }

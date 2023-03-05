@@ -12,7 +12,7 @@
             </p>
 
             <h4>1 - Create a Multisig Address</h4>
-            <p>Add 2 or more banano addresses to form a new multisig address.<br>
+            <p>Add 2 or more nano addresses to form a new multisig address.<br>
             If you (or the participants) don't have any, they can be generated with the <a routerLink="/keygenerator" class="name">Keypair Generator</a> and stored safely.
             </p>
             <div>
@@ -49,7 +49,7 @@
                       <div uk-grid>
                         <div class="uk-width-5-6 uk-text-truncate">
                           <ng-container>
-                            <div class="uk-text-truncate"><app-banano-account-id [accountID]="account" middle="on" class="banano-address-monospace"></app-banano-account-id></div>
+                            <div class="uk-text-truncate"><app-nano-account-id [accountID]="account" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
                           </ng-container>
                         </div>
                         <div class="action-remove uk-width-1-6 uk-text-right">
@@ -78,7 +78,7 @@
                     <div uk-grid>
                       <div *ngIf="createdMultisig == ''" class="uk-margin-small-bottom">...</div>
                       <div *ngIf="createdMultisig !== ''">
-                        <div class="uk-margin-small-bottom"><app-banano-account-id [accountID]="createdMultisig" middle="on" class="banano-address-monospace"></app-banano-account-id></div>
+                        <div class="uk-margin-small-bottom"><app-nano-account-id [accountID]="createdMultisig" middle="on" class="nano-address-monospace"></app-nano-account-id></div>
                         <a title="Copy Address To Clipboard" ngxClipboard [cbContent]="createdMultisig" (cbOnSuccess)="copied()" uk-tooltip>Copy address to clipboard</a>
                       </div>
                     </div>
@@ -144,7 +144,7 @@
                 <label class="uk-form-label" for="form-horizontal-text2">Signing Data</label>
                 <div class="uk-form-controls">
                   <div class="uk-inline uk-width-1-1">
-                    <input (input)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="bananosign:{abc..}" autocomplete="off">
+                    <input (input)="validateUnsigned(unsignedBlock)" (keyup.enter)="navigateBlock(unsignedBlock)" [(ngModel)]="unsignedBlock" class="uk-input" [ngClass]="{ 'uk-form-success': unsignedStatus === 1, 'uk-form-danger': unsignedStatus === 0 }" type="text" placeholder="nanosign:{abc..}" autocomplete="off">
                   </div>
                 </div>
               </div>

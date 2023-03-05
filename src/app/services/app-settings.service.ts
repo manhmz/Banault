@@ -32,17 +32,17 @@ interface AppSettings {
 
 @Injectable()
 export class AppSettingsService {
-  storeKey = `bananovault-appsettings`;
+  storeKey = `nanovault-appsettings`;
 
   settings: AppSettings = {
     language: null,
-    displayDenomination: 'mbanano',
+    displayDenomination: 'mnano',
     // displayPrefix: 'xrb',
     walletStore: 'localStorage',
-    displayCurrency: '',
+    displayCurrency: 'USD',
     defaultRepresentative: null,
-    lockOnClose: 1,
-    lockInactivityMinutes: 30,
+    lockOnClose: 0,
+    lockInactivityMinutes: 0,
     ledgerReconnect: 'usb',
     powSource: 'custom',
     multiplierSource: 1,
@@ -55,7 +55,7 @@ export class AppSettingsService {
     minimumReceive: '0.000001',
     walletVersion: 1,
     lightModeEnabled: false,
-    identiconsStyle: 'bananoidenticons',
+    identiconsStyle: 'none',
   };
 
   serverOptions = [
@@ -70,50 +70,18 @@ export class AppSettingsService {
     {
       name: 'My Banano Ninja',
       value: 'ninja',
-      api: 'https://mybanano.ninja/api/node',
-      ws: 'wss://ws.mybanano.ninja',
+      api: 'https://banano-api.mynano.ninja/rpc',
+      ws: 'wss://ws.banano.cc',
       auth: null,
       shouldRandom: true,
     },
     {
-      name: 'Bananos.cc',
-      value: 'bananos',
-      api: 'https://nault.bananos.cc/proxy',
-      ws: 'wss://nault-ws.bananos.cc',
+      name: 'Kalium',
+      value: 'kalium',
+      api: 'https://kaliumapi.appditto.com/api',
+      ws: 'wss://kaliumapi.appditto.com',
       auth: null,
       shouldRandom: true,
-    },
-    {
-      name: 'PowerNode',
-      value: 'powernode',
-      api: 'https://proxy.powernode.cc/proxy',
-      ws: 'wss://ws.powernode.cc',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Rainstorm City',
-      value: 'rainstorm',
-      api: 'https://rainstorm.city/api',
-      ws: 'wss://rainstorm.city/websocket',
-      auth: null,
-      shouldRandom: true,
-    },
-    {
-      name: 'Nanex.cc',
-      value: 'nanex',
-      api: 'https://api.nanex.cc',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
-    },
-    {
-      name: 'BananoCrawler',
-      value: 'bananocrawler',
-      api: 'https://vault.bananocrawler.cc/api/node-api',
-      ws: null,
-      auth: null,
-      shouldRandom: false,
     },
     {
       name: 'Custom',
@@ -139,8 +107,8 @@ export class AppSettingsService {
     acc.push( server.api.replace(/https?:\/\//g, '') );
     return acc;
   }, [
-    'proxy.bananos.cc/proxy',
-    'node.somebanano.com'
+    'proxy.nanos.cc/proxy',
+    'node.somenano.com'
   ]);
 
   constructor(
@@ -228,31 +196,31 @@ export class AppSettingsService {
   clearAppSettings() {
     localStorage.removeItem(this.storeKey);
     this.settings = {
-      language: 'en',
-      displayDenomination: 'mbanano',
+      language: null,
+      displayDenomination: 'mnano',
       // displayPrefix: 'xrb',
       walletStore: 'localStorage',
       displayCurrency: 'USD',
       defaultRepresentative: null,
-      lockOnClose: 1,
-      lockInactivityMinutes: 30,
+      lockOnClose: 0,
+      lockInactivityMinutes: 0,
       ledgerReconnect: 'usb',
-      powSource: 'best',
+      powSource: 'custom',
       multiplierSource: 1,
-      customWorkServer: '',
+      customWorkServer: 'http://localhost:8010/proxy',
       pendingOption: 'amount',
-      serverName: 'random',
-      serverAPI: null,
-      serverWS: null,
+      serverName: 'custom',
+      serverAPI: 'http://localhost:7072',
+      serverWS: 'ws://localhost:7074',
       serverAuth: null,
       minimumReceive: '0.000001',
       walletVersion: 1,
       lightModeEnabled: false,
-      identiconsStyle: 'bananoidenticons',
+      identiconsStyle: 'none',
     };
   }
 
-  // Get the base URL part of the serverAPI, e.g. https://bananovault.io from https://bananovault.io/api/node-api.
+  // Get the base URL part of the serverAPI, e.g. https://nanovault.io from https://nanovault.io/api/node-api.
   getServerApiBaseUrl(): string {
     const u = url.parse(this.settings.serverAPI);
     u.pathname = '/';

@@ -9,7 +9,7 @@ import { MusigService } from '../../services/musig.service';
 @Component({
   selector: 'app-multisig',
   templateUrl: './multisig.component.html',
-  styleUrls: ['./multisig.component.css']
+  styleUrls: ['./multisig.component.less']
 })
 export class MultisigComponent implements OnInit {
   accountAdd = '';
@@ -52,23 +52,15 @@ export class MultisigComponent implements OnInit {
   addAccount() {
     if (this.accountAddStatus !== 1) {
       this.notificationService.removeNotification('account-invalid');
-      this.notificationService.sendWarning('Invalid banano address!', {identifier: 'account-invalid'});
+      this.notificationService.sendWarning('Invalid nano address!', {identifier: 'account-invalid'});
       return;
     }
-<<<<<<< HEAD
     if (this.storedAccounts.includes(this.accountAdd.replace('ban_', 'ban_').toLocaleLowerCase())) {
-=======
-    if (this.storedAccounts.includes(this.accountAdd.replace('xrb_', 'ban_').toLocaleLowerCase())) {
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
       this.notificationService.removeNotification('account-added');
       this.notificationService.sendWarning('Account already added!', {identifier: 'account-added'});
       return;
     }
-<<<<<<< HEAD
     this.storedAccounts.push(this.accountAdd.replace('ban_', 'ban_').toLocaleLowerCase());
-=======
-    this.storedAccounts.push(this.accountAdd.replace('xrb_', 'ban_').toLocaleLowerCase());
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
     this.accountAdd = '';
     this.accountAddStatus = null;
     this.showAddBox = false;
@@ -127,7 +119,7 @@ export class MultisigComponent implements OnInit {
       return false;
     }
     let url = null;
-    if (string.startsWith('bananosign:')) {
+    if (string.startsWith('nanosign:')) {
       url = new URL(string);
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname)) {
@@ -141,18 +133,18 @@ export class MultisigComponent implements OnInit {
     if (this.validateMultisig()) {
       this.router.navigate(['account', this.multisigAccount], { queryParams: {sign: 1}});
     } else {
-      this.notificationService.sendWarning('Invalid banano account!');
+      this.notificationService.sendWarning('Invalid nano account!');
     }
   }
 
   navigateBlock(block) {
     let badScheme = false;
 
-    if (block.startsWith('bananosign:') || block.startsWith('bananoprocess:')) {
+    if (block.startsWith('nanosign:') || block.startsWith('nanoprocess:')) {
       const url = new URL(block);
-      if (url.protocol === 'bananosign:') {
+      if (url.protocol === 'nanosign:') {
         this.remoteSignService.navigateSignBlock(url);
-      } else if (url.protocol === 'bananoprocess:') {
+      } else if (url.protocol === 'nanoprocess:') {
         this.remoteSignService.navigateProcessBlock(url);
       } else {
         badScheme = true;

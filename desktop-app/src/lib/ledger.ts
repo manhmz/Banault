@@ -1,7 +1,7 @@
 import TransportNodeHid from '@ledgerhq/hw-transport-node-hid';
 import TransportNodeBle from '@ledgerhq/hw-transport-node-ble';
 import * as LedgerLogs from '@ledgerhq/logs';
-import Banano from 'hw-app-banano';
+import Nano from 'hw-app-nano';
 
 import * as rx from 'rxjs';
 
@@ -39,7 +39,7 @@ export class LedgerService {
 
   ledger = {
     status: LedgerStatus.NOT_CONNECTED,
-    banano: null,
+    nano: null,
     transport: null,
   };
 
@@ -49,11 +49,11 @@ export class LedgerService {
   // Reset connection to the ledger device, update the status
   resetLedger(errorMessage = '') {
     this.ledger.transport = null;
-    this.ledger.banano = null;
+    this.ledger.nano = null;
     this.setLedgerStatus(LedgerStatus.NOT_CONNECTED, errorMessage);
   }
 
-  // Open a connection to the usb device and initialize up the Banano Ledger library
+  // Open a connection to the usb device and initialize up the Nano Ledger library
   async loadTransport(bluetooth: boolean) {
     return new Promise((resolve, reject) => {
       (bluetooth ? TransportNodeBle : TransportNodeHid).create().then(trans => {
@@ -61,7 +61,7 @@ export class LedgerService {
         // LedgerLogs.listen((log) => console.log(`Ledger: ${log.type}: ${log.message}`))
         this.ledger.transport = trans;
         this.ledger.transport.setExchangeTimeout(this.waitTimeout); // 5 minutes
-        this.ledger.banano = new Banano(this.ledger.transport);
+        this.ledger.nano = new Nano(this.ledger.transport);
 
         resolve(this.ledger.transport);
       }).catch(reject);
@@ -70,7 +70,7 @@ export class LedgerService {
 
   async loadAppConfig(): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.ledger.banano.getAppConfiguration().then(resolve).catch(reject);
+      this.ledger.nano.getAppConfiguration().then(resolve).catch(reject);
     });
   }
 
@@ -128,7 +128,7 @@ export class LedgerService {
       this.ledger.transport.setExchangeTimeout(showOnScreen ? this.waitTimeout : this.normalTimeout);
 
       this.queryingLedger = true;
-      const account = await this.ledger.banano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
+      const account = await this.ledger.nano.getAddress(this.ledgerPath(accountIndex), showOnScreen);
       this.queryingLedger = false;
 
       this.ledgerMessage$.next({ event: 'account-details', data: Object.assign({ accountIndex }, account) });
@@ -152,7 +152,7 @@ export class LedgerService {
   async cacheBlock(accountIndex, cacheData, signature) {
     try {
       this.queryingLedger = true;
-      const cacheResponse = await this.ledger.banano.cacheBlock(this.ledgerPath(accountIndex), cacheData, signature);
+      const cacheResponse = await this.ledger.nano.cacheBlock(this.ledgerPath(accountIndex), cacheData, signature);
       this.queryingLedger = false;
 
       this.ledgerMessage$.next({ event: 'cache-block', data: Object.assign({ accountIndex }, cacheResponse) });
@@ -169,7 +169,7 @@ export class LedgerService {
   async signBlock(accountIndex, blockData) {
     try {
       this.queryingLedger = true;
-      const signResponse = await this.ledger.banano.signBlock(this.ledgerPath(accountIndex), blockData);
+      const signResponse = await this.ledger.nano.signBlock(this.ledgerPath(accountIndex), blockData);
       this.queryingLedger = false;
 
       this.ledgerMessage$.next({ event: 'sign-block', data: Object.assign({ accountIndex }, signResponse) });

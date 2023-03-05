@@ -39,7 +39,7 @@
     },
     {
       "name": "ninja",
-      "urls": ["https://mybanano.ninja/api/**"],
+      "urls": ["https://mynano.ninja/api/**"],
       "cacheConfig": {
         "maxSize": 50,
         "maxAge": "60d",

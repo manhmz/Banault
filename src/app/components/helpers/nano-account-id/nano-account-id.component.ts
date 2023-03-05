@@ -1,11 +1,11 @@
 import {Component, Input, OnChanges, HostBinding} from '@angular/core';
 
 @Component({
-  selector: 'app-banano-account-id',
-  templateUrl: './banano-account-id.component.html',
-  styleUrls: ['./banano-account-id.component.css'],
+  selector: 'app-nano-account-id',
+  templateUrl: './nano-account-id.component.html',
+  styleUrls: ['./nano-account-id.component.css'],
 })
-export class BananoAccountIdComponent implements OnChanges {
+export class NanoAccountIdComponent implements OnChanges {
 
   @HostBinding('class') classes: string;
   @Input() accountID: string;
@@ -19,7 +19,7 @@ export class BananoAccountIdComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.middle === 'auto') this.classes = 'uk-flex';
-    if (this.middle === 'break') this.classes = 'banano-address-breakable';
+    if (this.middle === 'break') this.classes = 'nano-address-breakable';
     const accountID = this.accountID;
     const openingChars = 10;
     const closingChars = 5;

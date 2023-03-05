@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { QrScanComponent } from './qr-scan.component';
 
@@ -6,7 +6,7 @@ describe('AddressBookComponent', () => {
   let component: QrScanComponent;
   let fixture: ComponentFixture<QrScanComponent>;
 
-  beforeEach(waitForAsync(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ QrScanComponent ]
     })

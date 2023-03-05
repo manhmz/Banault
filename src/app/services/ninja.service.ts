@@ -7,7 +7,7 @@ import { UtilService } from './util.service';
 export class NinjaService {
 
   // URL to Ninja API
-  ninjaUrl = 'https://mybanano.ninja/api/';
+  ninjaUrl = 'https://mynano.ninja/api/';
 
   // null - loading, false - offline, true - online
   status = null;
@@ -64,35 +64,17 @@ export class NinjaService {
 
   // false - does not exist, null - any other error
   async getAccount(account: string): Promise<any> {
-    const REQUEST_TIMEOUT_MS = 10000;
+    return await this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
+      .then(res => {
+        return res;
+      })
+      .catch(err => {
+        if (err.status === 404) {
+          return false;
+        }
 
-    const successPromise =
-      this.http.get(this.ninjaUrl + 'accounts/' + account).toPromise()
-        .then(res => {
-          return res;
-        })
-        .catch(err => {
-          if (err.status === 404) {
-            return false;
-          }
-
-          return null;
-        });
-
-    const timeoutPromise =
-      new Promise(resolve => {
-        setTimeout(
-          () => {
-            resolve(null);
-          },
-          REQUEST_TIMEOUT_MS
-        );
+        return null;
       });
-
-    return await Promise.race([
-      successPromise,
-      timeoutPromise
-    ]);
   }
 
 }

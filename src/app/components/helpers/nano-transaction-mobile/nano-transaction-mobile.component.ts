@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, OnChanges } from '@angular/core';
 
 @Component({
-  selector: 'app-banano-transaction-mobile',
-  templateUrl: './banano-transaction-mobile.component.html',
-  styleUrls: ['./banano-transaction-mobile.component.less']
+  selector: 'app-nano-transaction-mobile',
+  templateUrl: './nano-transaction-mobile.component.html',
+  styleUrls: ['./nano-transaction-mobile.component.less']
 })
-export class BananoTransactionMobileComponent implements OnInit, OnChanges {
+export class NanoTransactionMobileComponent implements OnInit, OnChanges {
 
   @Input() transaction: any;
   @Input() isInteractable = true;

@@ -11,25 +11,11 @@ import {BehaviorSubject} from 'rxjs';
 const nacl = window['nacl'];
 
 @Injectable()
-export class BananoBlockService {
+export class NanoBlockService {
   representativeAccounts = [
-<<<<<<< HEAD
-    'ban_1x7biz69cem95oo7gxkrw6kzhfywq4x5dupw4z1bdzkb74dk9kpxwzjbdhhs', // BananoCrawler
-    'ban_1zuksmn4e8tjw1ch8m8fbrwy5459bx8645o9euj699rs13qy6ysjhrewioey', // Bananowallets.guide
-    'ban_3chartsi6ja8ay1qq9xg3xegqnbg1qx76nouw6jedyb8wx3r4wu94rxap7hg', // Banano Charts
-    'ban_1ninja7rh37ehfp9utkor5ixmxyg8kme8fnzc4zty145ibch8kf5jwpnzr3r', // My Banano Ninja
-    'ban_1iuz18n4g4wfp9gf7p1s8qkygxw7wx9qfjq6a9aq68uyrdnningdcjontgar', // BananoTicker / Json
-    'ban_3power3gwb43rs7u9ky3rsjp6fojftejceexfkf845sfczyue4q3r1hfpr3o', // PowerNode
-    'ban_1ookerz3adg5rxc4zwwoshim5yyyihf6dpogjihwwq6ksjpq7ea4fuam5mmc', // Bananolooker.com
-=======
     'ban_1fomoz167m7o38gw4rzt7hz67oq6itejpt4yocrfywujbpatd711cjew8gjj', // FOMO
     'ban_1cake36ua5aqcq1c5i3dg7k8xtosw7r9r7qbbf5j15sk75csp9okesz87nfn', // Cake
     'ban_1ka1ium4pfue3uxtntqsrib8mumxgazsjf58gidh1xeo5te3whsq8z476goo', // Kalium
-    'ban_1fomoz167m7o38gw4rzt7hz67oq6itejpt4yocrfywujbpatd711cjew8gjj', // FOMO
-    'ban_1cake36ua5aqcq1c5i3dg7k8xtosw7r9r7qbbf5j15sk75csp9okesz87nfn', // Cake
-    'ban_1ka1ium4pfue3uxtntqsrib8mumxgazsjf58gidh1xeo5te3whsq8z476goo', // Kalium
-    'ban_1fomoz167m7o38gw4rzt7hz67oq6itejpt4yocrfywujbpatd711cjew8gjj', // FOMO
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   ];
 
   zeroHash = '0000000000000000000000000000000000000000000000000000000000000000';
@@ -418,14 +404,14 @@ export class BananoBlockService {
     if (blockData.contents.type !== 'state') {
       throw new Error(`Frontier block wasn't a state block, which shouldn't be possible`);
     }
-    if (this.util.hex.fromUint8(this.util.banano.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
+    if (this.util.hex.fromUint8(this.util.nano.hashStateBlock(blockData.contents)) !== accountInfo.frontier) {
       throw new Error(`Frontier hash didn't match block data`);
     }
   }
 
   // Sign a state block, and insert the signature into the block.
   signStateBlock(walletAccount, blockData) {
-    const hashBytes = this.util.banano.hashStateBlock(blockData);
+    const hashBytes = this.util.nano.hashStateBlock(blockData);
     const privKey = walletAccount.keyPair.secretKey;
     const signed = nacl.sign.detached(hashBytes, privKey, walletAccount.keyPair.expanded);
     blockData.signature = this.util.hex.fromUint8(signed);

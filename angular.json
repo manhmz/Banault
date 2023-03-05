@@ -11,6 +11,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -27,33 +28,27 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-              "qrcode",
-              "bip39",
-              "@zxing/library",
-              "bignumber.js",
-              "bananocurrency",
-              "hw-app-banano",
-              "crypto-js",
-              "blakejs",
-              "bananocurrency-web",
-              "bignumber.js",
-              "u2f-api",
-              "create-hash",
-              "randombytes",
-              "pbkdf2",
-              "zxcvbn",
-              "url",
-              "punycode",
-              "querystring",
-              "hw-transport-webusb",
-              "hw-transport-web-ble"
-            ],
-            "vendorChunk": true,
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "sourceMap": true,
-            "optimization": false,
-            "namedChunks": true
+               "qrcode",
+               "bip39",
+               "@zxing/library",
+               "bignumber.js",
+               "nanocurrency",
+               "hw-app-nano",
+               "crypto-js",
+               "blakejs",
+               "nanocurrency-web",
+               "bignumber.js",
+               "u2f-api",
+               "create-hash",
+               "randombytes",
+               "pbkdf2",
+               "zxcvbn",
+               "url",
+               "punycode",
+               "querystring",
+               "hw-transport-webusb",
+               "hw-transport-web-ble"
+            ]
           },
           "configurations": {
             "production": {
@@ -66,7 +61,9 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -89,7 +86,9 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
+              "extractCss": true,
               "namedChunks": false,
+              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -100,8 +99,7 @@
                 }
               ]
             }
-          },
-          "defaultConfiguration": ""
+          }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -142,11 +140,14 @@
           }
         },
         "lint": {
-          "builder": "@angular-eslint/builder:lint",
+          "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
+            "tsConfig": [
+              "src/tsconfig.app.json",
+              "src/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
             ]
           }
         }
@@ -163,6 +164,17 @@
             "protractorConfig": "./protractor.conf.js",
             "devServerTarget": "nault:serve"
           }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "e2e/tsconfig.e2e.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
         }
       }
     }
@@ -176,8 +188,5 @@
     "@schematics/angular:directive": {
       "prefix": "app"
     }
-  },
-  "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
   }
 }

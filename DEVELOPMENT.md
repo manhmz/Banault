@@ -3,10 +3,10 @@
 ## Application Structure
 
 - [Nault](https://github.com/Nault/Nault) - The main wallet application (UI + Seed Generation/Block Signing/Etc).
-- Communication with the network is done via banano RPC and Websocket protocols, private or public on any banano network.
+- Communication with the network is done via nano RPC and Websocket protocols, private or public on any nano network.
 
 ## Development Prerequisites
-- [NodeJS](https://nodejs.org) v16.x + NPM v8.x
+- [NodeJS](https://nodejs.org) v14.x + NPM v6.x
 - Angular CLI: `npm install -g @angular/cli`
 
 ## Development Guide

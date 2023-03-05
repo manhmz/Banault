@@ -133,7 +133,7 @@ export class WalletWidgetComponent implements OnInit {
       this.notificationService.sendSuccess(`Wallet unlocked`);
       this.modal.hide();
       if (this.unlockPassword.length < 6) {
-        // eslint-disable-next-line max-len
+        // tslint:disable-next-line: max-line-length
         this.notificationService.sendWarning(`You are using an insecure password and encouraged to change it from settings > manage wallet`);
       }
 

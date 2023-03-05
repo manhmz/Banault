@@ -28,15 +28,15 @@ import {WorkPoolService} from './services/work-pool.service';
 import {ConfigureAppComponent} from './components/configure-app/configure-app.component';
 import {AppSettingsService} from './services/app-settings.service';
 import {WebsocketService} from './services/websocket.service';
-import {BananoBlockService} from './services/banano-block.service';
+import {NanoBlockService} from './services/nano-block.service';
 import { AccountDetailsComponent } from './components/account-details/account-details.component';
 import { TransactionDetailsComponent } from './components/transaction-details/transaction-details.component';
 import {PriceService} from './services/price.service';
 import { FiatPipe } from './pipes/fiat.pipe';
 import { AmountSplitPipe } from './pipes/amount-split.pipe';
 import { ImportWalletComponent } from './components/import-wallet/import-wallet.component';
-import { BananoAccountIdComponent } from './components/helpers/banano-account-id/banano-account-id.component';
-import { BananoIdenticonComponent } from './components/helpers/banano-identicon/banano-identicon.component';
+import { NanoAccountIdComponent } from './components/helpers/nano-account-id/nano-account-id.component';
+import { NanoIdenticonComponent } from './components/helpers/nano-identicon/nano-identicon.component';
 import {PowService} from './services/pow.service';
 import { ImportAddressBookComponent } from './components/import-address-book/import-address-book.component';
 import { CurrencySymbolPipe } from './pipes/currency-symbol.pipe';
@@ -57,6 +57,7 @@ import { InstallWidgetComponent } from './components/install-widget/install-widg
 import { QrModalComponent } from './components/qr-modal/qr-modal.component';
 import { QrModalService } from './services/qr-modal.service';
 import { NgbModule, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { PasswordStrengthMeterModule } from 'angular-password-strength-meter';
 import {MusigService} from './services/musig.service';
 
 // QR code module
@@ -68,9 +69,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { MultisigComponent } from './components/multisig/multisig.component';
 import { KeygeneratorComponent } from './components/keygenerator/keygenerator.component';
-import { BananoTransactionMobileComponent } from './components/helpers/banano-transaction-mobile/banano-transaction-mobile.component';
+import { NanoTransactionMobileComponent } from './components/helpers/nano-transaction-mobile/nano-transaction-mobile.component';
 import { TranslocoRootModule } from './transloco/transloco-root.module';
-import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
 
 @NgModule({
   declarations: [
@@ -92,8 +92,8 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     FiatPipe,
     AmountSplitPipe,
     ImportWalletComponent,
-    BananoAccountIdComponent,
-    BananoIdenticonComponent,
+    NanoAccountIdComponent,
+    NanoIdenticonComponent,
     ImportAddressBookComponent,
     CurrencySymbolPipe,
     RepresentativesComponent,
@@ -110,8 +110,7 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     InstallWidgetComponent,
     MultisigComponent,
     KeygeneratorComponent,
-    BananoTransactionMobileComponent,
-    NoPaddingZerosPipe
+    NanoTransactionMobileComponent,
   ],
   imports: [
     BrowserModule,
@@ -122,6 +121,7 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     ClipboardModule,
     ZXingScannerModule,
     NgbModule,
+    PasswordStrengthMeterModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production && !environment.desktop }),
     TranslocoRootModule,
   ],
@@ -135,7 +135,7 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     WorkPoolService,
     AppSettingsService,
     WebsocketService,
-    BananoBlockService,
+    NanoBlockService,
     PriceService,
     PowService,
     RepresentativeService,
@@ -148,7 +148,6 @@ import { NoPaddingZerosPipe } from './pipes/no-padding-zeros.pipe';
     QrModalService,
     DeeplinkService,
     MusigService,
-    NoPaddingZerosPipe
   ],
   bootstrap: [AppComponent]
 })

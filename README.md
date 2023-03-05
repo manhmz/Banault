@@ -2,13 +2,13 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/nault/nault)
 [![GitHub All Releases](https://img.shields.io/github/downloads/nault/nault/total)](https://github.com/Nault/Nault/releases/latest)
-[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.bananocenter.org)
+[![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.nanocenter.org)
 
-Nault is a community driven fork of the popular banano wallet [BananoVault](https://github.com/cronoh/bananovault) 💙
+Nault is a community driven fork of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
-It's a fully client-side signing wallet for sending and receiving [banano](https://github.com/bananocurrency/banano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/Nault/Nault/releases/latest).
+It's a fully client-side signing wallet for sending and receiving [nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/Nault/Nault/releases/latest).
 
-Seamless integration with any banano compatible RPC backend/websocket and the aim to be more frequently maintained are some of the main features. Those together will greatly increase the stability, performance and uptime.
+Seamless integration with any nano compatible RPC backend/websocket and the aim to be more frequently maintained are some of the main features. Those together will greatly increase the stability, performance and uptime.
 
 ![Nault Screenshot](/src/assets/img/preview.png)
 ___
@@ -28,7 +28,7 @@ Then compare the output hash with the one listed in the corresponding checksums 
 #### Web App
 You can also use Nault from any device on the web at [nault.cc](https://nault.cc).
 
-Both the desktop (recommended) and web version supports the Ledger Banano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
+Both the desktop (recommended) and web version supports the Ledger Nano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
 
 The web version can additionally be pulled from the [dockerhub repo](https://hub.docker.com/r/nault/nault) using: docker pull nault/nault:latest
 
@@ -50,14 +50,14 @@ If you want to know how to setup the development environment head over to [DEVEL
 
 ## Support
 
-If you are looking for more interactive and quick support compared to creating a new Github issue, you will then find most of the developers in the Nault channel over at the [TNC discord server](https://discord.bananocenter.org/).
+If you are looking for more interactive and quick support compared to creating a new Github issue, you will then find most of the developers in the Nault channel over at the [TNC discord server](https://discord.nanocenter.org/).
 
 ## Acknowledgements
 
 Special thanks to the following!
 
-- [BananoVault](https://github.com/cronoh/bananovault) - The original one
-- [numtel/banano-webgl-pow](https://github.com/numtel/banano-webgl-pow) - WebGL PoW Implementation
+- [NanoVault](https://github.com/cronoh/nanovault) - The original one
+- [numtel/nano-webgl-pow](https://github.com/numtel/nano-webgl-pow) - WebGL PoW Implementation
 - [jaimehgb/RaiBlocksWebAssemblyPoW](https://github.com/jaimehgb/RaiBlocksWebAssemblyPoW) - CPU PoW Implementation
 - [dcposch/blakejs](https://github.com/dcposch/blakejs) - Blake2b Implementation
 - [dchest/tweetnacl-js](https://github.com/dchest/tweetnacl-js) - Cryptography Implementation

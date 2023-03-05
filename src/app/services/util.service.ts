@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as blake from 'blakejs';
 import {BigNumber} from 'bignumber.js';
-import * as bananocurrency from 'bananocurrency';
+import * as nanocurrency from 'nanocurrency';
 
 const nacl = window['nacl'];
 const STATE_BLOCK_PREAMBLE = '0000000000000000000000000000000000000000000000000000000000000006';
@@ -62,16 +62,16 @@ export class UtilService {
     getAccountChecksum: getAccountChecksum,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
-    isValidBananoAmount: isValidBananoAmount,
+    isValidNanoAmount: isValidNanoAmount,
     isValidAmount: isValidAmount,
   };
-  banano = {
-    mbananoToRaw: mbananoToRaw,
-    kbananoToRaw: kbananoToRaw,
-    bananoToRaw: bananoToRaw,
-    rawToMbanano: rawToMbanano,
-    rawToKbanano: rawToKbanano,
-    rawToBanano: rawToBanano,
+  nano = {
+    mnanoToRaw: mnanoToRaw,
+    knanoToRaw: knanoToRaw,
+    nanoToRaw: nanoToRaw,
+    rawToMnano: rawToMnano,
+    rawToKnano: rawToKnano,
+    rawToNano: rawToNano,
     hashStateBlock: hashStateBlock,
     isValidSeed: isValidSeed,
     isValidHash: isValidHash,
@@ -100,7 +100,7 @@ function hexToUint4(hexValue) {
   return uint4;
 }
 function hexToUint8(hexValue) {
-  // eslint-disable-next-line no-bitwise
+  // tslint:disable-next-line:no-bitwise
   const length = (hexValue.length / 2) | 0;
   const uint8 = new Uint8Array(length);
   for (let i = 0; i < length; i++) uint8[i] = parseInt(hexValue.substr(i * 2, 2), 16);
@@ -124,7 +124,7 @@ function uint4ToUint8(uintValue) {
   return uint8;
 }
 
-/* eslint-disable no-bitwise */
+// tslint:disable:no-bitwise
 function uint4ToUint5(uintValue) {
   const length = uintValue.length / 5 * 4;
   const uint5 = new Uint8Array(length);
@@ -140,7 +140,7 @@ function uint4ToUint5(uintValue) {
   }
   return uint5;
 }
-/* eslint-enable no-bitwise */
+// tslint:enable:no-bitwise
 
 function uint4ToHex(uint4) {
   let hex = '';
@@ -158,7 +158,7 @@ function uint5ToString(uint5) {
   return string;
 }
 
-/* eslint-disable no-bitwise */
+// tslint:disable:no-bitwise
 function uint5ToUint4(uint5) {
   const length = uint5.length / 4 * 5;
   const uint4 = new Uint8Array(length);
@@ -172,7 +172,7 @@ function uint5ToUint4(uint5) {
   }
   return uint4;
 }
-/* eslint-enable no-bitwise */
+// tslint:enable:no-bitwise
 
 
 /** Uint8 Functions **/
@@ -191,7 +191,7 @@ function uint8ToHex(uintValue) {
   return(hex);
 }
 
-/* eslint-disable no-bitwise */
+// tslint:disable:no-bitwise
 function uint8ToUint4(uintValue) {
   const uint4 = new Uint8Array(uintValue.length * 2);
   for (let i = 0; i < uintValue.length; i++) {
@@ -201,12 +201,12 @@ function uint8ToUint4(uintValue) {
 
   return uint4;
 }
-/* eslint-enable no-bitwise */
+// tslint:enable:no-bitwise
 
 
 /** Dec Functions **/
 function decToHex(decValue, bytes = null) {
-  // eslint-disable-next-line prefer-const
+  // tslint:disable-next-line:prefer-const
   let dec = decValue.toString().split(''), sum = [], hex = '', hexArray = [], i, s;
   while (dec.length) {
     s = 1 * dec.shift();
@@ -293,11 +293,7 @@ function generateAccountKeyPair(accountSecretKeyBytes, expanded = false) {
   return nacl.sign.keyPair.fromSecretKey(accountSecretKeyBytes, expanded);
 }
 
-<<<<<<< HEAD
-function getPublicAccountID(accountPublicKeyBytes, prefix = 'banano') {
-=======
 function getPublicAccountID(accountPublicKeyBytes, prefix = 'ban') {
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
   const accountHex = util.uint8.toHex(accountPublicKeyBytes);
   const keyBytes = util.uint4.toUint8(util.hex.toUint4(accountHex)); // For some reason here we go from u, to hex, to 4, to 8??
   const checksum = util.uint5.toString(util.uint4.toUint5(util.uint8.toUint4(blake.blake2b(keyBytes, null, 5).reverse())));
@@ -307,15 +303,15 @@ function getPublicAccountID(accountPublicKeyBytes, prefix = 'ban') {
 }
 
 function isValidAccount(account: string): boolean {
-  return bananocurrency.checkAddress(account);
+  return nanocurrency.checkAddress(account);
 }
 
-// Check if a string is a numeric and larger than 0 but less than banano supply
-function isValidBananoAmount(val: string) {
+// Check if a string is a numeric and larger than 0 but less than nano supply
+function isValidNanoAmount(val: string) {
   // numerics and last character is not a dot and number of dots is 0 or 1
   const isnum = /^-?\d*\.?\d*$/.test(val);
   if (isnum && String(val).slice(-1) !== '.') {
-    if (val !== '' && mbananoToRaw(val).gte(1) && bananocurrency.checkAmount(mbananoToRaw(val).toString(10))) {
+    if (val !== '' && mnanoToRaw(val).gte(1) && nanocurrency.checkAmount(mnanoToRaw(val).toString(10))) {
       return true;
     } else {
       return false;
@@ -327,22 +323,13 @@ function isValidBananoAmount(val: string) {
 
 // Check if valid raw amount
 function isValidAmount(val: string) {
-  return bananocurrency.checkAmount(val);
+  return nanocurrency.checkAmount(val);
 }
 
 function getAccountPublicKey(account) {
-<<<<<<< HEAD
-  if (!isValidAccount(account)) {
-    throw new Error(`Invalid banano account`);
-  }
   const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
   const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
-  if (!isValid) throw new Error(`Invalid banano account`);
-
-=======
-  const account_crop = account.length === 64 ? account.substring(4, 64) : account.substring(5, 65);
-  const isValid = /^[13456789abcdefghijkmnopqrstuwxyz]+$/.test(account_crop);
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
+  if (!isValid) throw new Error(`Invalid nano account`);
   const key_uint4 = array_crop(uint5ToUint4(stringToUint5(account_crop.substring(0, 52))));
   const hash_uint4 = uint5ToUint4(stringToUint5(account_crop.substring(52, 60)));
   const key_array = uint4ToUint8(key_uint4);
@@ -354,70 +341,63 @@ function getAccountPublicKey(account) {
 }
 
 function setPrefix(account, prefix = 'xrb') {
-<<<<<<< HEAD
-  if (prefix === 'banano') {
-    return account.replace('ban_', 'ban_');
-  } else {
-    return account.replace('ban_', 'ban_');
-=======
   if (prefix === 'ban') {
-    return account.replace('xrb_', 'ban_');
+    return account.replace('ban_', 'ban_');
   } else {
-    return account.replace('ban_', 'xrb_');
->>>>>>> bc412ae (Fixed reprenstative and account with ban_ prefix)
+    return account.replace('ban_', 'ban_');
   }
 }
 
 /**
  * Conversion functions
  */
-const mbanano = 1000000000000000000000000000000;
-const kbanano = 1000000000000000000000000000;
-const banano  = 1000000000000000000000000;
-function mbananoToRaw(value) {
-  return new BigNumber(value).times(mbanano);
+const mnano = 100000000000000000000000000000;
+const knano = 100000000000000000000000000;
+const nano  = 100000000000000000000000;
+function mnanoToRaw(value) {
+  return new BigNumber(value).times(mnano);
 }
-function kbananoToRaw(value) {
-  return new BigNumber(value).times(kbanano);
+function knanoToRaw(value) {
+  return new BigNumber(value).times(knano);
 }
-function bananoToRaw(value) {
-  return new BigNumber(value).times(banano);
+function nanoToRaw(value) {
+  return new BigNumber(value).times(nano);
 }
-function rawToMbanano(value) {
-  return new BigNumber(value).div(mbanano);
+function rawToMnano(value) {
+  return new BigNumber(value).div(mnano);
 }
-function rawToKbanano(value) {
-  return new BigNumber(value).div(kbanano);
+function rawToKnano(value) {
+  return new BigNumber(value).div(knano);
 }
-function rawToBanano(value) {
-  return new BigNumber(value).div(banano);
+function rawToNano(value) {
+  return new BigNumber(value).div(nano);
 }
 
 /**
- * Banano functions
+ * Nano functions
  */
 function isValidSeed(val: string) {
-  return bananocurrency.checkSeed(val);
+  return nanocurrency.checkSeed(val);
 }
 
 function isValidHash(val: string) {
-  return bananocurrency.checkHash(val);
+  return nanocurrency.checkHash(val);
 }
 
 function isValidIndex(val: number) {
-  return bananocurrency.checkIndex(val);
+  return nanocurrency.checkIndex(val);
 }
 
 function isValidSignature(val: string) {
-  return bananocurrency.checkSignature(val);
+  return nanocurrency.checkSignature(val);
 }
 
 function isValidWork(val: string) {
-  return bananocurrency.checkWork(val);
+  return nanocurrency.checkWork(val);
 }
 
 function validateWork(blockHash: string, threshold: string, work: string) {
-  return bananocurrency.validateWork({blockHash: blockHash, threshold: threshold, work: work});
+  return nanocurrency.validateWork({blockHash: blockHash, threshold: threshold, work: work});
 }
 
 function hashStateBlock(block: StateBlock) {
@@ -544,16 +524,16 @@ const util = {
     getAccountChecksum: getAccountChecksum,
     setPrefix: setPrefix,
     isValidAccount: isValidAccount,
-    isValidBananoAmount: isValidBananoAmount,
-    isValidAmount: isValidBananoAmount,
+    isValidNanoAmount: isValidNanoAmount,
+    isValidAmount: isValidNanoAmount,
   },
-  banano: {
-    mbananoToRaw: mbananoToRaw,
-    kbananoToRaw: kbananoToRaw,
-    bananoToRaw: bananoToRaw,
-    rawToMbanano: rawToMbanano,
-    rawToKbanano: rawToKbanano,
-    rawToBanano: rawToBanano,
+  nano: {
+    mnanoToRaw: mnanoToRaw,
+    knanoToRaw: knanoToRaw,
+    nanoToRaw: nanoToRaw,
+    rawToMnano: rawToMnano,
+    rawToKnano: rawToKnano,
+    rawToNano: rawToNano,
     hashStateBlock: hashStateBlock,
     isValidSeed: isValidSeed,
     isValidHash: isValidHash,

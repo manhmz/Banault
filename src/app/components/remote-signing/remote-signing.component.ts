@@ -78,7 +78,7 @@ export class RemoteSigningComponent implements OnInit {
       return false;
     }
     let url = null;
-    if (string.startsWith('bananosign:')) {
+    if (string.startsWith('nanosign:')) {
       url = new URL(string);
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname)) {
@@ -94,7 +94,7 @@ export class RemoteSigningComponent implements OnInit {
       return false;
     }
     let url = null;
-    if (string.startsWith('bananoprocess:')) {
+    if (string.startsWith('nanoprocess:')) {
       url = new URL(string);
     }
     if (url && this.remoteSignService.checkSignBlock(url.pathname) && this.remoteSignService.checkProcessBlock(url.pathname)) {
@@ -108,18 +108,18 @@ export class RemoteSigningComponent implements OnInit {
     if (this.validateDestination()) {
       this.router.navigate(['account', this.toAccountID], { queryParams: {sign: 1}});
     } else {
-      this.notificationService.sendWarning('Invalid banano account!');
+      this.notificationService.sendWarning('Invalid nano account!');
     }
   }
 
   navigateBlock(block) {
     let badScheme = false;
 
-    if (block.startsWith('bananosign:') || block.startsWith('bananoprocess:')) {
+    if (block.startsWith('nanosign:') || block.startsWith('nanoprocess:')) {
       const url = new URL(block);
-      if (url.protocol === 'bananosign:') {
+      if (url.protocol === 'nanosign:') {
         this.remoteSignService.navigateSignBlock(url);
-      } else if (url.protocol === 'bananoprocess:') {
+      } else if (url.protocol === 'nanoprocess:') {
         this.remoteSignService.navigateProcessBlock(url);
       } else {
         badScheme = true;

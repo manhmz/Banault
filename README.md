@@ -1,7 +1,7 @@
-# Banault
+# Nault
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/nault/nault)
-[![GitHub All Releases](https://img.shields.io/github/downloads/nault/nault/total)](https://github.com/manhtruongwang/Banault/releases/latest)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/manhtruongwang/Banault)
+[![GitHub All Releases](https://img.shields.io/github/downloads/manhtruongwang/Banault/total)](https://github.com/manhtruongwang/Banault/releases/latest)
 [![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.nanocenter.org)
 
 Banault is a community driven fork of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
@@ -30,7 +30,7 @@ You can also use Nault from any device on the web at [nault.cc](https://nault.cc
 
 Both the desktop (recommended) and web version supports the Ledger Nano hardware wallet. For help using it, please refer to [this guide](https://docs.nault.cc/2020/08/04/ledger-guide.html).
 
-The web version can additionally be pulled from the [dockerhub repo](https://hub.docker.com/r/nault/nault) using: docker pull nault/nault:latest
+The web version can additionally be pulled from the [dockerhub repo](https://hub.docker.com/r/manhtruongwang/Banault) using: docker pull nault/nault:latest
 
 A full security guide and other useful articles can be found in the [Nault Docs](https://docs.nault.cc).
 
@@ -65,6 +65,6 @@ Special thanks to the following!
 ## Donations
 
 If you have found Nault useful and are feeling generous, you can donate at
-`ban_3jnrhmh84uzy7mzyisz78kkwufs1sd397zqmndtmieq5f7n634u8ixgydgey`
+`ban_151sj7ainc3379f37acp9e81qsy9kyfprkb7m6gn56aifeyy1hzdcmquy69b`
 
 Thanks a lot!

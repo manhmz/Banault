@@ -4,9 +4,9 @@
 [![GitHub All Releases](https://img.shields.io/github/downloads/manhtruongwang/Banault/total)](https://github.com/manhtruongwang/Banault/releases/latest)
 [![Discord](https://img.shields.io/badge/discord-join%20chat-orange.svg?logo=discord&color=7289DA)](https://discord.nanocenter.org)
 
-Banault is a community driven fork of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
+Banault is a community driven fork for Banano by [VietGigs](https://vietgigs.vn) of the popular nano wallet [NanoVault](https://github.com/cronoh/nanovault) 💙
 
-It's a fully client-side signing wallet for sending and receiving [nano](https://github.com/nanocurrency/nano-node/) either directly in your browser at [nault.cc](https://nault.cc) or with the [desktop app](https://github.com/manhtruongwang/Banault/releases/latest).
+It's a fully client-side signing wallet for sending and receiving Banano.
 
 Seamless integration with any nano compatible RPC backend/websocket and the aim to be more frequently maintained are some of the main features. Those together will greatly increase the stability, performance and uptime.
 
